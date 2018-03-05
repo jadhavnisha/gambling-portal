@@ -12,7 +12,7 @@ console.log(web3.currentProvider);
 web3.eth.getCoinbase()
 .then(coinbase => {web3.eth.defaultAccount = coinbase});
 
-const LAXMI = new web3.eth.Contract(laxmiArtifacts.abi, '0x01e510e5039ccc4068b5bb3b5ca557111ddccbed')
+const LAXMI = new web3.eth.Contract(laxmiArtifacts.abi, '0x7c7b1878eb02a72afaa0011340311987cb088fd2')
 
 createAccount = () => {
   return web3.eth.accounts.create();
@@ -31,6 +31,12 @@ transfer = (_to) => {
   })
 };
 
+getBalance = (_ofAddress) => {
+  return LAXMI.methods.balanceOf(_ofAddress).call()
+  .then(i => {return(i)});
+}
+
 web3Obj.createAccount = createAccount;
 web3Obj.transfer = transfer;
+web3Obj.getBalance = getBalance;
 module.exports = web3Obj;

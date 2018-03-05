@@ -52,13 +52,16 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'Invalid input value for publicKey'
         }
       }
+    },
+    balance: {
+      type: DataTypes.VIRTUAL
     }
   }, {
     classMethods: {
       associate: function(models) {
         // associations can be defined here
       }
-    }  
+    }
   });
 
   user.beforeCreate((user, options) => {
@@ -101,11 +104,20 @@ module.exports = (sequelize, DataTypes) => {
       } else {
         var err = new Error("Email/password doesn't match");
         throw err;
-      }      
+      }
     })
   }
 
+  function getBalance(user) {
+    return web3.getBalance(user.publicKey)
+    .then(balance => {
+      user.balance = balance;
+      return user
+    });
+  }
+
   user.authenticate = authenticate;
+  user.getBalance = getBalance;
 
   return user;
 };

@@ -23,8 +23,11 @@ router.post('/signin', function(req, res, next) {
     
     return models.user.authenticate(req.body.email, req.body.password)
     .then(user => {
-        // req.session.userId = user.id;
-        return res.status(201).send(user);        
+        return models.user.getBalance(user);
+    })
+    .then(user => {
+      req.session.userId = user.id;
+      return res.status(201).send(user);
     })
     .catch(error => {
       console.log(error);
@@ -32,5 +35,19 @@ router.post('/signin', function(req, res, next) {
     });
   }
 })
+
+// GET for logout logout
+router.get('/logout', function (req, res, next) {
+  if (req.session) {
+    // delete session object
+    req.session.destroy(function (err) {
+      if (err) {
+        return next(err);
+      } else {
+        return res.send('logged out successfully');
+      }
+    });
+  }
+});
 
 module.exports = router;
