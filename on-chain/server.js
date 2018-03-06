@@ -12,7 +12,7 @@ console.log(web3.currentProvider);
 web3.eth.getCoinbase()
 .then(coinbase => {web3.eth.defaultAccount = coinbase});
 
-const LAXMI = new web3.eth.Contract(laxmiArtifacts.abi, '0x7c7b1878eb02a72afaa0011340311987cb088fd2')
+const LAXMI = new web3.eth.Contract(laxmiArtifacts.abi, '0x297ec4e26c4364fea931aecc3d48f60563aecc13')
 
 createAccount = () => {
   return web3.eth.accounts.create();
