@@ -2,13 +2,19 @@ pragma solidity ^0.4.18;
 
 contract Games {
     
+    string encrypted_result;
     // game instance information
-    struct GameInstance {
-        string game_name;
-        string encrypted_result;
-    }
+    /** 
+      Below function commented out, as we are going to store only
+      encrypted result of a game instance on blockchain, we can use
+      this struct if more data required to store related to game
+    **/
+    // struct GameInstance {
+    //     string game_name;
+    //     byte32 encrypted_result;
+    // }
     
-    mapping (address => GameInstance) gameInstances;// mapping of instance address with its details
+    mapping (address => string) gameInstances;// mapping of game instance address with its result
     address[] public gameInstanceAccounts;//public address array of all game instances
     
     address owner;// application account
@@ -22,11 +28,8 @@ contract Games {
         _;
     }
     
-    function setGameInstance(address _address, string _game_name, string _encrypted_result) onlyOwner public {
-        var instance = gameInstances[_address];
-        
-        instance.game_name = _game_name;
-        instance.encrypted_result = _encrypted_result;
+    function setGameInstance(address _address, string _encrypted_result) onlyOwner public {
+        gameInstances[_address] = _encrypted_result;
         
         gameInstanceAccounts.push(_address) -1;
     }
@@ -35,7 +38,7 @@ contract Games {
         return gameInstanceAccounts;
     }
     
-    function getGameInstance(address _address) view public returns (string, string) {
-        return (gameInstances[_address].game_name, gameInstances[_address].encrypted_result);
+    function getGameInstance(address _address) view public returns (string) {
+        return (gameInstances[_address]);
     }    
 }
