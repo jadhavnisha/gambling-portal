@@ -25,7 +25,7 @@ module.exports = {
         allowNull: false,        
       },
       config: {
-        type: Sequelize.JSON
+        type: Sequelize.JSONB
       },
       publicKey: {
         type: Sequelize.STRING,

@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       isIn: [['created', 'active', 'finished']],
     },
     config: {
-      type: DataTypes.JSON,      
+      type: DataTypes.JSONB,
     },  
     publicKey: {
       type: DataTypes.STRING,
