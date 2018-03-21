@@ -17,14 +17,10 @@ module.exports = (sequelize, DataTypes) => {
     startTime: {
       type: DataTypes.DATE,
       isDate: true,
-      allowNull: false,
-      notEmpty: true,
     },
     drawTime: {
       type: DataTypes.DATE,
       isDate: true,
-      allowNull: false,
-      notEmpty: true,
     },
     status: {
       type: DataTypes.STRING,
@@ -76,5 +72,54 @@ module.exports = (sequelize, DataTypes) => {
     .catch(error => console.log);
   });
 
+  function setEncryptionKey(encryption_key, contest_id) {
+    var contestByID =  getById(contest_id);
+    var contestToSave = contestByID.then(contest => {
+      contest.config['encryption_key'] = encryption_key;
+      contest.config = contest.config;
+      contest.status = 'active';
+      contest.startTime = Date.now();
+      return contest.save();
+    });
+
+    return Promise.all([contestByID,contestToSave]).then(function([updatedContest, contest]) {
+      return contest;
+    })
+    .catch(error => console.log);
+  }
+
+  function setResult(result, contest_id) {
+    return contest.update({
+      result: result,
+      drawTime: Date.now(),
+      status: 'finished'
+    },{
+      where: {
+        id:contest_id,
+        status: 'active'
+      },
+    },{
+      returning:true,
+      plain: true
+    })
+    .then(self => self )
+    .catch(error => console.log);
+  }
+
+  function getById(contest_id){
+    return contest.findById(contest_id)
+    .then(contest => {
+      if(contest == null) {
+        var err = new Error("User not found");
+        err.status = 401;
+        throw err;
+      }
+      return contest
+    })
+  }
+
+  contest.setEncryptionKey = setEncryptionKey;
+  contest.setResult = setResult;
+  contest.getById = getById;
   return contest;
 };

@@ -14,11 +14,9 @@ module.exports = {
       },
       startTime: {
         type: Sequelize.DATE,
-        allowNull: false
       },
       drawTime: {
         type: Sequelize.DATE,
-        allowNull: false
       },
       status: {
         type: Sequelize.STRING,
