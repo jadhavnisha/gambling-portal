@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  h1 Gambling Portal - Sign in
+  form(method='post', action='/signin')
+    table
+      tr
+        td Email:
+        td
+          input(type='email', name='email')
+      tr
+        td Password:
+        td
+          input(type='password', name='password')
+    button(type='submit') Sign In
+  | Dont have an account, 
+  input(type='button', onclick="location.href='/signup';", value='Sign Up')
+  |  now

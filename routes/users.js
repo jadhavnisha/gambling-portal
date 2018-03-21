@@ -13,21 +13,48 @@ router.post('/signup', function(req, res, next) {
 
   return models.user
     .create(userData)
-    .then(user => res.status(201).send(user))
+    //.then(user => res.status(201).send(user))
+    .then(user => res.render('signin'))
     .catch(error => res.status(400).send(error));
 });
 
+/* render signup form */
+router.get('/signup', function(req, res, next) {
+  if(req.session.userId)
+  {
+    res.redirect('dashboard');
+  }else{
+    res.render('signup');
+  }
+});
+
+/* render signin form */
+router.get('/signin', function(req, res, next) {
+  if(req.session.userId)
+  {
+    res.redirect('dashboard');
+  }else{
+    res.render('signin');
+  }
+});
+
+router.get('/dashboard', function(req, res, next) {
+  if(req.session.userId)
+  {
+    return models.user.getById(req.session.userId)
+    .then(user => {res.render('dashboard', {user: user})})
+    .catch(error => res.status(400).send(error));
+  }else{
+    res.redirect('signin');
+  }
+});
+
 router.post('/signin', function(req, res, next) {
-  console.log('login');
   if (req.body.email && req.body.password) {
-    
     return models.user.authenticate(req.body.email, req.body.password)
     .then(user => {
-        return models.user.getBalance(user);
-    })
-    .then(user => {
       req.session.userId = user.id;
-      return res.status(201).send(user);
+      res.redirect('dashboard');
     })
     .catch(error => {
       console.log(error);
@@ -36,15 +63,15 @@ router.post('/signin', function(req, res, next) {
   }
 })
 
-// GET for logout logout
-router.get('/logout', function (req, res, next) {
+// GET for signout signout
+router.get('/signout', function (req, res, next) {
   if (req.session) {
     // delete session object
     req.session.destroy(function (err) {
       if (err) {
         return next(err);
       } else {
-        return res.send('logged out successfully');
+        res.redirect('signin');
       }
     });
   }
