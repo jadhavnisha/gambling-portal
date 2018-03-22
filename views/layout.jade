@@ -1,19 +1,19 @@
 doctype html(lang='en')
 head
     title Gambling Portal
-    |
+    | 
     meta(charset='utf-8')
-    |
+    | 
     meta(name='viewport', content='width=device-width, initial-scale=1')
-    |
+    | 
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
-    |
+    | 
     link(rel='stylesheet', href='stylesheets/style.css')
-    |
+    | 
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
-    |
+    | 
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
-    |
+    | 
     style.
       /* Remove the navbar's default margin-bottom and rounded borders */
       .navbar {
@@ -31,19 +31,19 @@ head
         .navbar-header
           button.navbar-toggle(type='button', data-toggle='collapse', data-target='#myNavbar')
             span.icon-bar
-            |
+            |         
             span.icon-bar
-            |
+            |         
             span.icon-bar
-          |
+          |       
           a.navbar-brand(href='#') Casino
-        |
+        |     
         #myNavbar.collapse.navbar-collapse
           ul.nav.navbar-nav
             if user
               li
                 a(href='/dashboard') Dashbaord
-          |
+          |       
           ul.nav.navbar-nav.navbar-right
             if user
               li
