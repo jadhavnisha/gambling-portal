@@ -4,17 +4,17 @@ const models = require('../models/index');
 const contestService = require('../services/contest_service');
 
 router.use(function(req, res, next) {
-  // do any checks you want to in here
-
-  // CHECK THE USER STORED IN SESSION FOR A CUSTOM VARIABLE
-  // you can do this however you want with whatever variables you set up
   if (req.session.userId)
       return next();
-
-  // IF A USER ISN'T LOGGED IN, THEN REDIRECT THEM SOMEWHERE
-  res.redirect('/');
+  res.send('Please login');
 });
 
+
+onlyAdmin = function(req, res, next) {
+  if (req.session.isAdmin)
+      return next();
+  res.send('ur not admin');
+}
 /* list contests */
 router.get('/contests', function(req, res, next) {
   return models.contest.findAll({
@@ -27,7 +27,7 @@ router.get('/contests', function(req, res, next) {
 });
 
 /* Create contest or game instance*/
-router.post('/contests', function(req, res, next){
+router.post('/contests', onlyAdmin, function(req, res, next){
   var contestData = {
     name: req.body.name,
     status: req.body.status,
@@ -42,13 +42,13 @@ router.post('/contests', function(req, res, next){
     .catch(error => res.status(400).send(error));
 });
 
-router.put('/contests/:id/start', function(req, res, next) {
+router.put('/contests/:id/start', onlyAdmin, function(req, res, next) {
   return contestService.start(req.params.id)
   .then(contest => res.status(201).send(contest))
   .catch(err => next(err))
 });
 
-router.put('/contests/:id/draw', function(req, res, next) {
+router.put('/contests/:id/draw', onlyAdmin, function(req, res, next) {
   return contestService.draw(req.params.id)
   .then(contest => {res.status(201).send(contest)})
   .catch(err => next(err))
