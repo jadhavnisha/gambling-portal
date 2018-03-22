@@ -1,7 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const models = require('../models/index');
+const contestService = require('../services/contest_service');
 
+router.use(function(req, res, next) {
+  if (req.session.userId)
+      return next();
+  res.send('Please login');
+});
+
+
+onlyAdmin = function(req, res, next) {
+  if (req.session.isAdmin)
+      return next();
+  res.send('ur not admin');
+}
 /* list contests */
 router.get('/contests', function(req, res, next) {
   return models.contest.findAll({
@@ -14,11 +27,9 @@ router.get('/contests', function(req, res, next) {
 });
 
 /* Create contest or game instance*/
-router.post('/contests', function(req, res, next){
+router.post('/contests', onlyAdmin, function(req, res, next){
   var contestData = {
     name: req.body.name,
-    startTime: req.body.startTime,
-    drawTime: req.body.drawTime,
     status: req.body.status,
     gameId: req.body.gameId,
   };
@@ -26,11 +37,21 @@ router.post('/contests', function(req, res, next){
     contestData.config = {"number_of_dice": req.body.number_of_dice };
   }
   var contest = models.contest
-    .build(contestData)
-    console.log(contest.validate())
-  return contest.validate()
+    .create(contestData)
     .then(contest => res.status(201).send(contest))
     .catch(error => res.status(400).send(error));
+});
+
+router.put('/contests/:id/start', onlyAdmin, function(req, res, next) {
+  return contestService.start(req.params.id)
+  .then(contest => res.status(201).send(contest))
+  .catch(err => next(err))
+});
+
+router.put('/contests/:id/draw', onlyAdmin, function(req, res, next) {
+  return contestService.draw(req.params.id)
+  .then(contest => {res.status(201).send(contest)})
+  .catch(err => next(err))
 });
 
 module.exports = router;

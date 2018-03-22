@@ -55,6 +55,8 @@ router.post('/signin', function(req, res, next) {
     .then(user => {
       req.session.userId = user.id;
       res.redirect('dashboard');
+      req.session.isAdmin = user.isAdmin;
+      return res.status(201).send(user);
     })
     .catch(error => {
       console.log(error);
