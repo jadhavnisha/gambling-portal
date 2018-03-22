@@ -1,3 +1,4 @@
+extends layout
 style.
   table{
   border: solid 1px;
@@ -12,22 +13,23 @@ style.
   width: 200px;
   height: 200px;
   }
-h1 Dashboard Page
-p Welcome, #{user.firstName+' '+user.lastName}
-a(href='/signout') Sign Out
-p Your crypto balance is : #{user.balance} 
-table(style='border: solid 1px; width: 80%;height: 300px;')
-  tr
-    td
-      a(href='./game.html')
-        img(src='https://www.gstatic.com/webp/gallery3/3.sm.png')
-      p High-Low
-    td
-      a(href='./game.html')
-        img(src='https://lh4.ggpht.com/-fd1T1ZGYi01Aohv_f96h_wXr9iJvz8u9A9CtrlTVE-wjNy5wIb8OPO6618ii_qcTU0=w300-rw')
-      p Black-Jack
-    td
-      a(href='./game.html')
-        img(src='https://cdn4.iconfinder.com/data/icons/casino-royale/512/cards_02-128.png')
-      p Pocker
-p Select game where you want to try your luck.
+block content
+  h1 Dashboard Page
+  p Welcome, #{user.firstName+' '+user.lastName}
+  a(href='/signout') Sign Out
+  p Your crypto balance is : #{user.balance}
+  table(style='border: solid 1px; width: 80%;height: 300px;')
+    tr
+      td
+        a(href='./game.html')
+          img(src='https://www.gstatic.com/webp/gallery3/3.sm.png')
+        p High-Low
+      td
+        a(href='./game.html')
+          img(src='https://lh4.ggpht.com/-fd1T1ZGYi01Aohv_f96h_wXr9iJvz8u9A9CtrlTVE-wjNy5wIb8OPO6618ii_qcTU0=w300-rw')
+        p Black-Jack
+      td
+        a(href='./game.html')
+          img(src='https://cdn4.iconfinder.com/data/icons/casino-royale/512/cards_02-128.png')
+        p Pocker
+  p Select game where you want to try your luck.

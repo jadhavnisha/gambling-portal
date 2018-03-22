@@ -1,26 +1,40 @@
-extends layout
+extend layout
 
 block content
-  h1 Gambling Portal - Sign up
-  form(method='post', action='/signup')
-    table
-      tr
-        td First Name:
-        td
-          input(type='text', name='firstName')
-      tr
-        td Last Name:
-        td
-          input(type='text', name='lastName')
-      tr
-        td Email:
-        td
-          input(type='text', name='email')
-      tr
-        td Password:
-        td
-          input(type='password', name='password')
-    button(type='submit') Sign Up
-  | Do you have an account, 
-  input(type='button', onclick="location.href='/signin';", value='Sign In')
-  |  now
+  .row.centered-form
+    .col-xs-12.col-sm-8.col-md-4.col-sm-offset-2.col-md-offset-4
+      .panel.panel-default
+        .panel-heading
+          h3.panel-title
+            | Please sign up to Gamble
+            small It&apos;s free!
+        |
+        .panel-body
+          form(role='form', method='post', action='/signup')
+            .row
+              .col-xs-6.col-sm-6.col-md-6
+                .form-group
+                  input#first_name.form-control.input-sm(type='text', name='firstName', placeholder='First Name')
+              |
+              .col-xs-6.col-sm-6.col-md-6
+                .form-group
+                  input#last_name.form-control.input-sm(type='text', name='lastName', placeholder='Last Name')
+            |
+            .form-group
+              input#email.form-control.input-sm(type='email', name='email', placeholder='Email Address')
+            |
+            .row
+              .col-xs-6.col-sm-6.col-md-6
+                .form-group
+                  input#password.form-control.input-sm(type='password', name='password', placeholder='Password')
+              |
+              .col-xs-6.col-sm-6.col-md-6
+                .form-group
+                  input#password_confirmation.form-control.input-sm(type='password', name='password_confirmation', placeholder='Confirm Password')
+            |
+            |
+            input.btn.btn-info.btn-block(type='submit', value='Sign up')
+            |
+            p.right-text
+              | Already a Member?
+              a(href='/signin') Login
