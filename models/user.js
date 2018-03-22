@@ -53,6 +53,9 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
+    isAdmin: {
+      type: DataTypes.BOOLEAN
+    },
     balance: {
       type: DataTypes.VIRTUAL
     }

@@ -27,6 +27,7 @@ router.post('/signin', function(req, res, next) {
     })
     .then(user => {
       req.session.userId = user.id;
+      req.session.isAdmin = user.isAdmin;
       return res.status(201).send(user);
     })
     .catch(error => {
