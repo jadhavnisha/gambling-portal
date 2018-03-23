@@ -10,7 +10,8 @@ a {
 
 .container{
 	background-color: #fde;
-	height: 90%;
+	min-height: 90%;
+	width: 99%;
 }
 
 .centered-form{
@@ -25,4 +26,13 @@ a {
 .right-text{
 	text-align: right;
 	padding-top: 10px;
+}
+
+.center-text{
+	text-align: center;
+	padding-top: 10px;
+}
+
+.white{
+	color: #fff !important;
 }

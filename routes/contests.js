@@ -6,7 +6,7 @@ const contestService = require('../services/contest_service');
 router.use(function(req, res, next) {
   if (req.session.userId)
       return next();
-  res.send('Please login');
+  res.redirect('signin');
 });
 
 

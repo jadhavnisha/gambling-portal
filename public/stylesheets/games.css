@@ -1,0 +1,19 @@
+.game-list{
+	padding-top: 10;
+}
+
+.game-image{
+	width: 100% !important;
+	height: 50% !important;
+}
+
+.game-title{
+	font-weight: bolder;
+	font-size: 30;
+	
+	color: #000;
+}
+
+.thumbnail{
+	background-color: #22ADB1;
+}

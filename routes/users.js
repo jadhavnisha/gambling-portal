@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const models = require('../models/index');
+var fakeGames = [{name: 'Black-Jack'}, {name: 'Poker'}];
 
 /* POST create user */
 router.post('/signup', function(req, res, next) {
@@ -39,14 +40,19 @@ router.get('/signin', function(req, res, next) {
 });
 
 router.get('/dashboard', function(req, res, next) {
-  if(req.session.userId)
-  {
-    return models.user.getById(req.session.userId)
-    .then(user => {res.render('dashboard', {user: user})})
-    .catch(error => res.status(400).send(error));
-  }else{
-    res.redirect('signin');
-  }
+  var user = models.user.getById(req.session.userId);
+  var games = user.then(user => {
+    return models.game.findAll();
+  })
+
+  return Promise.all([user, games])
+  .then(([user, games]) => {
+    if(games.length < 2){
+      games.push.apply(games, fakeGames);
+    }
+    res.render('dashboard', {user: user, games: games})
+  })
+  .catch(error => res.status(400).send(error));
 });
 
 router.post('/signin', function(req, res, next) {
@@ -54,9 +60,8 @@ router.post('/signin', function(req, res, next) {
     return models.user.authenticate(req.body.email, req.body.password)
     .then(user => {
       req.session.userId = user.id;
-      res.redirect('dashboard');
       req.session.isAdmin = user.isAdmin;
-      return res.status(201).send(user);
+      res.redirect('dashboard');
     })
     .catch(error => {
       console.log(error);
