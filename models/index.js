@@ -47,5 +47,6 @@ db.Sequelize = Sequelize;
 db.user = require('./user')(sequelize, Sequelize);
 db.game = require('./game')(sequelize, Sequelize);
 db.contest = require('./contest')(sequelize, Sequelize);
+db.contestant = require('./contestant')(sequelize, Sequelize);
 
 module.exports = db;
