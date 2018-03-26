@@ -14,23 +14,23 @@ block content
             .row
               .col-xs-6.col-sm-6.col-md-6
                 .form-group
-                  input#first_name.form-control.input-sm(type='text', name='firstName', placeholder='First Name')
+                  input#first_name.form-control.input-sm(type='text', name='firstName', placeholder='First Name*', required='required')
               | 
               .col-xs-6.col-sm-6.col-md-6
                 .form-group
-                  input#last_name.form-control.input-sm(type='text', name='lastName', placeholder='Last Name')
+                  input#last_name.form-control.input-sm(type='text', name='lastName', placeholder='Last Name*', required='required')
             | 
             .form-group
-              input#email.form-control.input-sm(type='email', name='email', placeholder='Email Address')
+              input#email.form-control.input-sm(type='email', name='email', placeholder='Email Address*', required='required')
             | 
             .row
               .col-xs-6.col-sm-6.col-md-6
                 .form-group
-                  input#password.form-control.input-sm(type='password', name='password', placeholder='Password')
+                  input#password.form-control.input-sm(type='password', name='password', placeholder='Password*', required='required')
               | 
               .col-xs-6.col-sm-6.col-md-6
                 .form-group
-                  input#password_confirmation.form-control.input-sm(type='password', name='password_confirmation', placeholder='Confirm Password')
+                  input#password_confirmation.form-control.input-sm(type='password', name='password_confirmation', placeholder='Confirm Password*', required='required')
             | 
             | 
             input.btn.btn-info.btn-block(type='submit', value='Sign up')

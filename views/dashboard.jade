@@ -1,25 +1,11 @@
 extends layout
-style.
-  table{
-  border: solid 1px;
-  width: 80%;
-  height: 300px;
-  text-align: center;
-  }
-  td{
-  width: 33%;
-  }
-  img{
-  width: 200px;
-  height: 200px;
-  }
 block content
   p.center-text.game-title Select the game where you want to try your luck
   .row.game-list
     each game in games
       .col-md-4
         .thumbnail
-          a(href="www.google.com")
+          a(href="/contests")
             img.game-image(src="/images/#{game.name}.jpg", alt="#{game.name}")
             | 
             p.center-text.game-title #{game.name}

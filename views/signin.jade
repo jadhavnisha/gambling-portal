@@ -11,10 +11,10 @@ block content
           form(role='form', method='post', action='/signin')
             fieldset
               .form-group
-                input.form-control(placeholder='E-mail', name='email', type='email', autofocus='')
+                input.form-control(placeholder='E-mail', name='email', type='email', autofocus='', required='required')
               | 
               .form-group
-                input.form-control(placeholder='Password', name='password', type='password', value='')
+                input.form-control(placeholder='Password', name='password', type='password', value='', required='required')
               // Change this to a button or input when using this as a form
               button.btn.btn-success.btn-block(type='submit') Login
               | 

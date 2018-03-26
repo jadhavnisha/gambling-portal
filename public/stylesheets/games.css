@@ -17,3 +17,28 @@
 .thumbnail{
 	background-color: #22ADB1;
 }
+
+.table-title{
+  background-color: #035;
+  font-size: 20px;
+  margin-top: 10;
+  color: white;
+  padding: 10 0 10 10;
+}
+
+table, th, td {
+	border: 1px solid black !important;
+	border-collapse: collapse;
+}
+
+th{
+	text-align: center;
+}
+
+table>thead{
+	background-color: aliceblue;
+}
+
+.contest-thumbnail{
+	width: 35px;
+}

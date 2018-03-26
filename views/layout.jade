@@ -63,4 +63,11 @@ head
                 span.glyphicon.glyphicon-log-in
                 |  Login
     .container
+      - if (messages.info)
+        .alert.alert-warning.fade.in
+          a.close(href="#", data-dismiss="alert") ×
+          | 
+          strong
+          |  #{messages.info}
+
       block content

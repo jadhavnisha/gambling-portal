@@ -1,0 +1,52 @@
+extends layout
+block content
+  .table-title Active Contests
+  table#active-contests-list.table.table-bordered.table-responsive
+    thead
+      tr
+        th(colspan="2") Name
+        |       
+        th Started At
+        |       
+        th Draw Time
+        |       
+        th # Players
+    |   
+    tbody
+      each contest in contests
+        tr
+          td.contest-thumbnail
+            img.contest-thumbnail(src="/images/#{contest.name}.jpg")
+          |     
+          td #{contest.name}
+          |       
+          td #{contest.startTime}
+          |       
+          td #{contest.drawTime}
+          |       
+          td 7
+  .table-title Finished Contests
+  table#finished-contests-list.table.table-bordered.table-responsive
+    thead
+      tr
+        th(colspan="2") Name
+        |       
+        th Started At
+        |       
+        th Draw Time
+        |       
+        th # Players
+    |   
+    tbody
+      each contest in contests
+        tr
+          td.contest-thumbnail
+            img.contest-thumbnail(src="/images/#{contest.name}.jpg")
+          |       
+          td #{contest.name}
+          |       
+          td #{contest.startTime}
+          |       
+          td #{contest.drawTime}
+          |       
+          td 7
