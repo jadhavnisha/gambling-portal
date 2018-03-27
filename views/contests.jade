@@ -1,5 +1,39 @@
 extends layout
+
 block content
+  if user.isAdmin
+    .table-title Contest to Start
+    table#active-contests-list.table.table-bordered.table-responsive
+      thead
+        tr
+          th(colspan="2") Name
+          |       
+          th Started At
+          |       
+          th Draw Time
+          |       
+          th # Players
+          |       
+          th Action
+      |   
+      tbody
+        each contest in contests
+          tr
+            td.contest-thumbnail
+              img.contest-thumbnail(src="/images/#{contest.name}.jpg")
+            |     
+            td #{contest.name}
+            |       
+            td #{contest.startTime}
+            |       
+            td #{contest.drawTime}
+            |       
+            td 7
+            | 
+            td
+              button.btn.btn-warning.contest-button
+                strong START
+
   .table-title Active Contests
   table#active-contests-list.table.table-bordered.table-responsive
     thead

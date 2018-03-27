@@ -8,9 +8,9 @@ head
     | 
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
     | 
-    link(rel='stylesheet', href='stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
     | 
-    link(rel='stylesheet', href='stylesheets/games.css')
+    link(rel='stylesheet', href='/stylesheets/games.css')
     | 
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
     | 
@@ -40,6 +40,9 @@ head
             if user
               li
                 a(href='/dashboard') Dashbaord
+              if user.isAdmin
+                li
+                  a(href='/admin/contests/create') Create Contest
           |       
           ul.nav.navbar-nav.navbar-right
             if user
@@ -60,8 +63,8 @@ head
             else
               li
                 a(href='/signin')
-                span.glyphicon.glyphicon-log-in
-                |  Login
+                  span.glyphicon.glyphicon-log-in
+                  |  Login
     .container
       - if (messages.info)
         .alert.alert-warning.fade.in

@@ -42,3 +42,7 @@ table>thead{
 .contest-thumbnail{
 	width: 35px;
 }
+
+.contest-button{
+	width: 100%;
+}

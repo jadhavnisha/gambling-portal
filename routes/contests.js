@@ -11,8 +11,13 @@ router.get('/contests', function(req, res, next) {
   return models.contest.findAll({
     where: whereCondition
   })
-  .then(contests => res.status(201).send(contests))
+  .then(contests => res.render('contests', {contests: contests, user: req.user}))
   .catch(error => res.status(400));
+});
+
+/* render contest creation form */
+router.get('/admin/contests/create', function(req, res, next) {
+  return res.render('admin/contests/create', {user: req.user});
 });
 
 /* Create contest or game instance*/

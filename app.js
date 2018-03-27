@@ -1,3 +1,4 @@
+var flash = require('express-flash');
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -13,7 +14,7 @@ var users = require('./routes/users');
 var contests = require('./routes/contests');
 var index = require('./routes/index');
 var games = require('./routes/games');
-var contestants = require('./routes/contestants');
+// var contestants = require('./routes/contestants');
 
 var app = express();
 app.use(cookieParser())
@@ -37,6 +38,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(flash());
 
 const _ = require('underscore')
 auth = function(req, res, next) {
@@ -66,7 +68,7 @@ app.use('/', users);
 app.use('/', contests);
 app.use('/', index);
 app.use('/', games);
-app.use('/', contestants);
+// app.use('/', contestants);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
