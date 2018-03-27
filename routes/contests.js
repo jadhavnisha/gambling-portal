@@ -3,31 +3,20 @@ const router = express.Router();
 const models = require('../models/index');
 const contestService = require('../services/contest_service');
 
-router.use(function(req, res, next) {
-  if (req.session.userId)
-      return next();
-  res.redirect('signin');
-});
-
-
-onlyAdmin = function(req, res, next) {
-  if (req.session.isAdmin)
-      return next();
-  res.send('ur not admin');
-}
 /* list contests */
 router.get('/contests', function(req, res, next) {
+  var whereCondition = { status: req.query.filter || ['created', 'active', 'finished'] };
+  if(req.query.gameId)
+    whereCondition['gameId'] = parseInt(req.query.gameId);
   return models.contest.findAll({
-    where: {
-      status: req.query.filter || ['created', 'active', 'finished']
-    }
+    where: whereCondition
   })
   .then(contests => res.status(201).send(contests))
   .catch(error => res.status(400));
 });
 
 /* Create contest or game instance*/
-router.post('/contests', onlyAdmin, function(req, res, next){
+router.post('/admin/contests', function(req, res, next){
   var contestData = {
     name: req.body.name,
     status: req.body.status,
@@ -42,13 +31,13 @@ router.post('/contests', onlyAdmin, function(req, res, next){
     .catch(error => res.status(400).send(error));
 });
 
-router.put('/contests/:id/start', onlyAdmin, function(req, res, next) {
+router.put('/admin/contests/:id/start', function(req, res, next) {
   return contestService.start(req.params.id)
   .then(contest => res.status(201).send(contest))
   .catch(err => next(err))
 });
 
-router.put('/contests/:id/draw', onlyAdmin, function(req, res, next) {
+router.put('/admin/contests/:id/draw', function(req, res, next) {
   return contestService.draw(req.params.id)
   .then(contest => {res.status(201).send(contest)})
   .catch(err => next(err))
