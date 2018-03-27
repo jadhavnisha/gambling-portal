@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
+const models = require('./models/index');
 
 // var index = require('./routes/index');
 var users = require('./routes/users');
@@ -35,6 +36,30 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+const _ = require('underscore')
+auth = function(req, res, next) {
+  var nonSecurePaths = ['/', '/signin', '/signup'];
+  if ( _.contains(nonSecurePaths, req.path) ) return next();
+
+  if (req.session.userId){
+    models.user.getById(req.session.userId)
+    .then(user => {
+      req.user = user;
+      return next();
+    });
+  } else {
+    res.send('Please login');
+  }
+};
+
+onlyAdmin = function(req, res, next) {
+  if (req.session.isAdmin)
+      return next();
+  res.send('ur not admin');
+}
+app.use('/',auth)
+app.use('/admin', onlyAdmin)
 
 app.use('/', users);
 app.use('/', contests);

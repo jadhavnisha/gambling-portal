@@ -119,8 +119,21 @@ module.exports = (sequelize, DataTypes) => {
     });
   }
 
+  function getById(user_id){
+    return user.findById(user_id)
+    .then(user => {
+      if(user == null) {
+        var err = new Error("User not found");
+        err.status = 401;
+        throw err;
+      }
+      return user
+    })
+  }
+
   user.authenticate = authenticate;
   user.getBalance = getBalance;
+  user.getById = getById;
 
   return user;
 };
