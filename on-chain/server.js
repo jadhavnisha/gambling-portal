@@ -18,6 +18,19 @@ createAccount = () => {
   return web3.eth.accounts.create();
 };
 
+transfer = (_to, _from = web3.eth.defaultAccount, _amount=200000) => {
+  console.log('hereeeeeeeeeeeeeeeeee', _to,_from)
+  LAXMI.methods.transfer(_to, _amount)
+  .send({from: _from},function(error, transactionHash){
+    if(error) {
+      console.log(error);
+      return error;
+    }
+    console.log(transactionHash);
+    return transactionHash
+  })
+};
+
 transfer = (_to) => {
   console.log('hereeeeeeeeeeeeeeeeee', _to,web3.eth.defaultAccount)
   LAXMI.methods.transfer(_to, 200000)
