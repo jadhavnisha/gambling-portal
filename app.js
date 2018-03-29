@@ -8,8 +8,8 @@ var bodyParser = require('body-parser');
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 const models = require('./models/index');
+const _ = require('underscore')
 
-// var index = require('./routes/index');
 var users = require('./routes/users');
 var contests = require('./routes/contests');
 var index = require('./routes/index');
@@ -40,7 +40,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
 
-const _ = require('underscore')
 auth = function(req, res, next) {
   var nonSecurePaths = ['/', '/signin', '/signup'];
   if ( _.contains(nonSecurePaths, req.path) ) return next();
