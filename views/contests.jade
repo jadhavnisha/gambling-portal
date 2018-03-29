@@ -8,31 +8,22 @@ block content
         tr
           th(colspan="2") Name
           |       
-          th Started At
-          |       
-          th Draw Time
-          |       
-          th # Players
+          th Remarks / Information
           |       
           th Action
       |   
       tbody
-        each contest in contests
+        each contest in createdContests
           tr
             td.contest-thumbnail
               img.contest-thumbnail(src="/images/#{contest.name}.jpg")
             |     
             td #{contest.name}
-            |       
-            td #{contest.startTime}
-            |       
-            td #{contest.drawTime}
-            |       
-            td 7
+            |     
+            td
             | 
             td
-              button.btn.btn-warning.contest-button
-                strong START
+              button.contest-start-draw.btn.btn-warning(value="#{contest.id}") START
 
   .table-title Active Contests
   table#active-contests-list.table.table-bordered.table-responsive
@@ -45,9 +36,12 @@ block content
         th Draw Time
         |       
         th # Players
+        | 
+        if user.isAdmin
+          th Action
     |   
     tbody
-      each contest in contests
+      each contest in activeContest
         tr
           td.contest-thumbnail
             img.contest-thumbnail(src="/images/#{contest.name}.jpg")
@@ -56,9 +50,13 @@ block content
           |       
           td #{contest.startTime}
           |       
-          td #{contest.drawTime}
+          td In next 2 hours
           |       
           td 7
+          | 
+          if user.isAdmin
+            td
+              button.contest-start-draw.btn.btn-warning(value="#{contest.id}") DRAW
   .table-title Finished Contests
   table#finished-contests-list.table.table-bordered.table-responsive
     thead
@@ -72,7 +70,7 @@ block content
         th # Players
     |   
     tbody
-      each contest in contests
+      each contest in finishedContest
         tr
           td.contest-thumbnail
             img.contest-thumbnail(src="/images/#{contest.name}.jpg")

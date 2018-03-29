@@ -6,15 +6,17 @@ head
     | 
     meta(name='viewport', content='width=device-width, initial-scale=1')
     | 
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
+    | 
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+    | 
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
     | 
     link(rel='stylesheet', href='/stylesheets/style.css')
     | 
     link(rel='stylesheet', href='/stylesheets/games.css')
     | 
-    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
-    | 
-    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+    script(src='/javascripts/main.js')
     | 
     style.
       /* Remove the navbar's default margin-bottom and rounded borders */
@@ -50,12 +52,14 @@ head
                 a.white
                   span.glyphicon.glyphicon-profile
                   | Welcome, 
-                  strong
-                    | #{user.firstName+' '+user.lastName}
+                  strong #{user.firstName+' '+user.lastName}
               li
-                a(href='#')
-                  span.glyphicon.glyphicon-bitcoin
-                  | #{user.balance}
+                a
+                  if user.isAdmin
+                    | [ admin ]
+                  else
+                    span.glyphicon.glyphicon-bitcoin
+                    | #{user.balance}
               li
                 a(href='/signout')
                   span.glyphicon.glyphicon-log-out

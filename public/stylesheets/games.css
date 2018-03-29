@@ -46,3 +46,12 @@ table>thead{
 .contest-button{
 	width: 100%;
 }
+
+.contest-start-draw{
+	width: 50%;
+}
+
+.login-btn{
+	width: 10%;
+	font-weight: bolder;
+}
