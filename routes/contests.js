@@ -22,13 +22,25 @@ router.get('/contests', function(req, res, next) {
 
   return Promise.all([createdContests, activeContest, finishedContest])
   .then(([createdContests, activeContest, finishedContest]) => 
-    res.render('contests', {createdContests: createdContests, activeContest: activeContest, finishedContest: finishedContest, user: req.user}))
+    res.render('contests/index', {createdContests: createdContests, activeContest: activeContest, finishedContest: finishedContest, user: req.user}))
   .catch(error => res.status(400).send(error));
 });
 
 /* render contest creation form */
 router.get('/admin/contests/create', function(req, res, next) {
   return res.render('admin/contests/create', {user: req.user});
+});
+
+/* render contest show form to place bid */
+router.get('/contests/:id', function(req, res, next) {
+  var contest_id = req.params.id;
+  var contest = models.contest.getById(contest_id);
+  var isParticipated = models.contestant.isUserParticipated(contest_id, req.user.id);
+
+  return Promise.all([contest, isParticipated])
+  .then(([contest, isParticipated]) => 
+    res.render('contests/show', {contest: contest, user: req.user, isParticipated: isParticipated}))
+  .catch(error => res.status(400).send(error));
 });
 
 /* Create contest or game instance*/

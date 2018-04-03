@@ -21,7 +21,10 @@ router.post('/contestant', function(req, res, next) {
 
     return models.contestant
       .create(contestantData)
-      .then(contestant => res.status(201).send(contestant))
+      .then(contestant => {
+        req.flash('info', 'Your bid has been placed successfully.!!');
+        res.redirect('/contests/'+contestant.contestId);
+      })
       .catch(error => {console.log(error); res.status(400).send(error)});
   }
 });

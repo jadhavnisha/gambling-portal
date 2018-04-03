@@ -1,0 +1,67 @@
+extends ../layout
+
+block content
+  if isParticipated
+    p.center-text.game-title.bid-alert You have placed bid for this contest !!!
+  .well.well-sm.first-heading.table-title
+    .row
+      .col-md-4
+        strong #{contest.name}
+      |     
+      .col-md-4
+        strong
+          | Started At: #{contest.createdAt}
+          strong
+      |     
+      .col-md-4
+        strong
+          | Draw Time: 1.00 PM
+          strong
+  .table-responsive
+    table.table.table-bordered.table-fixed
+      thead
+        tr
+          th PlayerName
+          |       
+          th Prediction
+          |       
+          th Current Bet
+      |   
+      tbody
+        tr
+          td John
+          |       
+          td Doe
+          |       
+          td john@example.com
+        |     
+        tr
+          td Mary
+          |       
+          td Moe
+          |       
+          td mary@example.com
+        |     
+        tr
+          td July
+          |       
+          td Dooley
+          |       
+          td july@example.com
+  if !isParticipated
+    form.form-inline(role='form', method='post', action='/contestant')
+      input(type="hidden", name="contestId", value="#{contest.id}")
+      .form-group.col-md-4
+        label(for="prediction") Your Prediction:
+        |     
+        select#prediction.custom-select(name="prediction")
+          option High
+          |       
+          option Low
+      |   
+      .form-group.col-md-4
+        label(for="bid") Bid Amount:
+        |     
+        input#bid.form-control(name="bid", type="number", min="10", max="1000")
+      |   
+      button.btn.btn-primary(type="submit") Place Bid

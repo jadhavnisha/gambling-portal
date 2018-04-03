@@ -55,3 +55,11 @@ table>thead{
 	width: 10%;
 	font-weight: bolder;
 }
+
+.table-responsive {
+    max-height:300px;
+}
+
+.bid-alert{
+  background-color: #EE9;
+}
