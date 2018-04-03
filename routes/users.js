@@ -2,6 +2,25 @@ const express = require('express');
 const router = express.Router();
 const models = require('../models/index');
 var fakeGames = [{name: 'Black-Jack'}, {name: 'Poker'}];
+var fs = require('fs');
+var path = require('path');
+
+router.get('/download', function(req, res, next){
+  var filename = path.join(__dirname, '../tmp/privateKey');
+  var stream = fs.createReadStream(filename);
+  stream.pipe(res).once("close", function () {
+      stream.destroy(); // makesure stream closed, not close if download aborted.
+      // deleteFile(filename);
+      fs.unlink(filename, function (err) {
+        if (err) {
+            console.error(err.toString());
+        } else {
+            console.warn(filename + ' deleted');
+        }
+    });
+  });
+  res.download(filename);
+})
 
 /* POST create user */
 router.post('/signup', function(req, res, next) {
@@ -16,8 +35,10 @@ router.post('/signup', function(req, res, next) {
     .create(userData)
     //.then(user => res.status(201).send(user))
     .then(user => {
-      req.flash('info', 'Signed up successfuly, use your credetials to signin.');
-      res.render('signin');})
+      var filename = path.join(__dirname, '../tmp/privateKey');
+      fs.writeFileSync(filename,user.privateKey);
+      res.render('signin');
+    })
     .catch(error => {
       req.flash('info', error.errors[0].message);
       res.render('signup');

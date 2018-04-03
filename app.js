@@ -41,7 +41,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
 
 auth = function(req, res, next) {
-  var nonSecurePaths = ['/', '/signin', '/signup'];
+  var nonSecurePaths = ['/', '/signin', '/signup', '/download'];
   if ( _.contains(nonSecurePaths, req.path) ) return next();
 
   if (req.session.userId){
