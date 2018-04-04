@@ -93,7 +93,13 @@ router.post('/signin', function(req, res, next) {
       req.session.isAdmin = user.isAdmin;
       req.session.userBalance = user.balance;
       req.session.userName = user.firstName + ' ' + user.lastName;
-      res.redirect('dashboard');
+      req.session.save();
+      if(req.session.userId) return;
+    })
+    .then(user => {
+      setTimeout(function(){
+        res.redirect('dashboard');
+      }, 10);
     })
     .catch(error => {
       console.log(error);
