@@ -33,16 +33,15 @@ router.post('/signup', function(req, res, next) {
 
   return models.user
     .create(userData)
-    //.then(user => res.status(201).send(user))
     .then(user => {
-      var filename = path.join(__dirname, '../tmp/privateKey');
-      fs.writeFileSync(filename,user.privateKey);
-      res.render('signin');
+      req.flash('info', 'Signed up successfuly..!!');
+      setTimeout(function(){
+        res.redirect('/signin');
+      },200);
     })
     .catch(error => {
       req.flash('info', error.errors[0].message);
       res.render('signup');
-      // res.status(400).send(error)
     });
 });
 

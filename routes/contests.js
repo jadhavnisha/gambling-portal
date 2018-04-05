@@ -31,15 +31,19 @@ router.get('/admin/contests/create', function(req, res, next) {
   return res.render('admin/contests/create', {user: req.user});
 });
 
-/* render contest show form to place bid */
 router.get('/contests/:id', function(req, res, next) {
   var contest_id = req.params.id;
-  var contest = models.contest.getById(contest_id);
   var isParticipated = models.contestant.isUserParticipated(contest_id, req.user.id);
+  var contestWithContestants = models.contest.findOne({
+      include: [{
+                  model: models.user,
+              }],
+      where: {id: parseInt(contest_id)}
+    })
 
-  return Promise.all([contest, isParticipated])
-  .then(([contest, isParticipated]) => 
-    res.render('contests/show', {contest: contest, user: req.user, isParticipated: isParticipated}))
+  return Promise.all([isParticipated, contestWithContestants])
+  .then(([isParticipated, contestWithContestants]) =>
+    res.render('contests/show', {user: req.user, isParticipated: isParticipated, contest: contestWithContestants}))
   .catch(error => res.status(400).send(error));
 });
 

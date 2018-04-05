@@ -63,3 +63,8 @@ table>thead{
 .bid-alert{
   background-color: #EE9;
 }
+
+.current-user-bid{
+  background-color: moccasin;
+  font-weight: bolder;
+}

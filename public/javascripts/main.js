@@ -10,4 +10,15 @@ $(window).on('load',function(){
 		  }
 		});
   });
+
+  // if($('.alert-warning').length && (/Signed up/).test($('.alert-warning')[0].innerText)){
+  //   console.log(true);
+  //   $.ajax({
+  //     url: '/download',
+  //     type: 'GET',
+  //     success: function(data) {
+  //       window.open('/contests', '_self');
+  //     }
+  //   });
+  // }
 });

@@ -10,58 +10,57 @@ block content
       |     
       .col-md-4
         strong
-          | Started At: #{contest.createdAt}
+          | Started At: #{contest.startTime}
           strong
       |     
       .col-md-4
         strong
           | Draw Time: 1.00 PM
-          strong
-  .table-responsive
-    table.table.table-bordered.table-fixed
-      thead
-        tr
-          th PlayerName
-          |       
-          th Prediction
-          |       
-          th Current Bet
-      |   
-      tbody
-        tr
-          td John
-          |       
-          td Doe
-          |       
-          td john@example.com
-        |     
-        tr
-          td Mary
-          |       
-          td Moe
-          |       
-          td mary@example.com
-        |     
-        tr
-          td July
-          |       
-          td Dooley
-          |       
-          td july@example.com
-  if !isParticipated
-    form.form-inline(role='form', method='post', action='/contestant')
-      input(type="hidden", name="contestId", value="#{contest.id}")
-      .form-group.col-md-4
-        label(for="prediction") Your Prediction:
-        |     
-        select#prediction.custom-select(name="prediction")
-          option High
-          |       
-          option Low
-      |   
-      .form-group.col-md-4
-        label(for="bid") Bid Amount:
-        |     
-        input#bid.form-control(name="bid", type="number", min="10", max="1000")
-      |   
-      button.btn.btn-primary(type="submit") Place Bid
+          strong  
+  .row
+    if contest.users.length
+      .table-responsive(class= isParticipated ? "col-md-12" : "col-md-8")
+        table.table.table-bordered.table-fixed
+          thead
+            tr
+              th PlayerName
+              |       
+              th Prediction
+              |       
+              th Current Bet
+          |   
+          tbody
+            each u in contest.users
+              tr(class= u.id == user.id ? "current-user-bid" : "")
+                td #{u.firstName + ' ' + u.lastName}
+                |               
+                td #{u.contestant.prediction}
+                | 
+                td
+                  | #{u.contestant.bid}
+                  span.glyphicon.glyphicon-bitcoin
+    else
+      .col-md-8
+        p.center-text.game-title.bid-alert No bid has been placed, be the first one to bid this contest.
+    if !isParticipated
+      .col-md-4
+        .panel.panel-default
+          .panel-heading
+            h3.panel-title Place your bid
+          | 
+          .panel-body
+            form(role='form', method='post', action='/contestant')
+              input(type="hidden", name="contestId", value="#{contest.id}")
+              fieldset
+                .form-group
+                  select#prediction.form-control.custom-select(name="prediction", required='required')
+                    option(value='') -- Predict --
+                    | 
+                    option High
+                    |       
+                    option Low
+                | 
+                .form-group
+                  input#bid.form-control(placeholder="Bid Amount", name="bid", type="number", min="10", max="1000" required="required")
+                // Change this to a button or input when using this as a form
+                button.btn.btn-primary(type='submit') BID
