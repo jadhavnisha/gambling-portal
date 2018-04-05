@@ -41,8 +41,6 @@ module.exports = (sequelize, DataTypes) => {
     classMethods: {
       associate: function(models) {
         // associations can be defined here
-        contestant.belongsTo(models.user);
-        contestant.belongsTo(models.contest);
       }
     },
     hooks: {
@@ -61,12 +59,14 @@ module.exports = (sequelize, DataTypes) => {
         .then(contest => {
           return contest.publicKey;          
         })
-        var userPub = contestPub.then(contestPub => {
-          sequelize.models.user.findById(contestant.userId)
+        var user = contestPub.then(contestPub => {
+          return sequelize.models.user.findById(contestant.userId)
         })
 
-        Promise.all([contestPub, userPub]).then(([_to, _from])=> {
-          web3.transfer(_to, _from, contestant.bid);
+        Promise.all([contestPub, user]).then(([_to, user])=> {
+          console.log(contestant.contestId, contestant.userId);
+          console.log(_to, user.publicKey, contestant.bid);
+          web3.transfer(_to, user.publicKey, contestant.bid);
         })
       }
     },

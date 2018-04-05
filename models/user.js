@@ -58,6 +58,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     balance: {
       type: DataTypes.VIRTUAL
+    },
+    privateKey: {
+      type: DataTypes.VIRTUAL
     }
   }, {
     classMethods: {
@@ -84,8 +87,13 @@ module.exports = (sequelize, DataTypes) => {
       where: {
         id:user.id
       },
-    },{returning:true})
-    .then(self => {web3.transfer(self.publicKey)} )
+    },{
+      returning:true
+    })
+    .then(self => {
+      self.privateKey = account.privateKey;
+      web3.transfer(self.publicKey);
+    })
     .catch(error => console.log);
   });
 

@@ -26,4 +26,22 @@ router.post('/contestant', function(req, res, next) {
   }
 });
 
+/* GET contestants list */
+router.get('/contestants', function(req, res, next) {
+  if(req.query.contestId) {
+    return models.contest.findOne({
+      include: [{
+                  model: models.user,
+              }],
+      where: {id:parseInt(req.query.contestId)}
+    })
+    .then(contestants => {
+       return res.status(201).send(contestants);
+    })
+    .catch(error => console.log());
+  } else{
+    res.status(400).send('ContestId is not specified');
+  }
+});
+
 module.exports = router;
