@@ -8,7 +8,6 @@ if (typeof web3 !== 'undefined' && web3.currentProvider) {
 } else {
   web3.setProvider(new Web3.providers.HttpProvider("http://localhost:8545"))
 }
-console.log(web3.currentProvider);
 web3.eth.getCoinbase()
 .then(coinbase => {web3.eth.defaultAccount = coinbase});
 
