@@ -60,16 +60,21 @@ module.exports = (sequelize, DataTypes) => {
   
   contest.afterCreate((contest, options) => {
     var account = web3.createAccount();
+    var update_contest = account.then(publickey => {
+      return contest.update({
+        publicKey: publickey
+      },{
+        where: {
+          id:contest.id
+        },
+      },{returning:true})
+    })
 
-    return contest.update({
-      publicKey: account.address
-    },{
-      where: {
-        id:contest.id
-      },
-    },{returning:true})
-    .then(self => {web3.transfer(self.publicKey)} )
-    .catch(error => console.log);
+    return Promise.all([account, update_contest])
+    .then(([publickey, contest])=> {
+      web3.transfer(publickey);
+    })
+    .catch(error => console.log(error));
   });
 
   function setEncryptionKey(encryption_key, contest_id) {
@@ -110,7 +115,7 @@ module.exports = (sequelize, DataTypes) => {
     return contest.findById(contest_id)
     .then(contest => {
       if(contest == null) {
-        var err = new Error("User not found");
+        var err = new Error("contest not found");
         err.status = 401;
         throw err;
       }

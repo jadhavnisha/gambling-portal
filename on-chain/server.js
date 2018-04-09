@@ -11,20 +11,41 @@ if (typeof web3 !== 'undefined' && web3.currentProvider) {
 web3.eth.getCoinbase()
 .then(coinbase => {web3.eth.defaultAccount = coinbase});
 
-const LAXMI = new web3.eth.Contract(laxmiArtifacts.abi, '0xeb97953117a7f1bcac033d94485fbf5e4342bedf')
+const LAXMI = new web3.eth.Contract(laxmiArtifacts.abi, '0x2cd6dd42f776cd9e9c49c775ffe2f6bd038fdb72')
 
-LAXMI.events.Transfer(function(error, event) {console.log(event)})
-.on('data', function(event){
-  console.log('data',event); // same results as the optional callback above
-})
-.on('changed', function(event){
-  // remove event from local database
-  console.log('changed',event)
-})
-.on('error', console.error);
+// LAXMI.events.Transfer(function(error, event) {
+//   console.log(error);
+//   console.log(event);
+// });
+// .on('data', function(event){
+//   console.log('data',event); // same results as the optional callback above
+// })
+// .on('changed', function(event){
+//   // remove event from local database
+//   console.log('changed',event)
+// })
+// .on('error', console.error);
 
-createAccount = () => {
-  return web3.eth.accounts.create();
+createAccount = (passphrase='test') => {
+  // return web3.eth.accounts.create();
+  return web3.eth.personal.newAccount(passphrase).then(publickey => {
+    console.log('publickey===',publickey);
+    return publickey;
+  });
+};
+
+unlockAccount = (publickey, passphrase='test') => {
+  web3.eth.personal.unlockAccount(publickey, passphrase, 200)
+  web3.eth.sendTransaction({
+      from: web3.eth.defaultAccount,
+      gasPrice: "20000000000",
+      gas: "21000",
+      to: publickey,
+      value: "1800000000000000",
+      data: ""
+  },passphrase)
+  .then(console.log)
+  .catch(console.log);
 };
 
 transfer = (_to, _from = web3.eth.defaultAccount, _amount=200000) => {
@@ -46,6 +67,7 @@ getBalance = (_ofAddress) => {
 }
 
 web3Obj.createAccount = createAccount;
+web3Obj.unlockAccount = unlockAccount;
 web3Obj.transfer = transfer;
 web3Obj.getBalance = getBalance;
 module.exports = web3Obj;

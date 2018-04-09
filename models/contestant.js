@@ -57,13 +57,14 @@ module.exports = (sequelize, DataTypes) => {
       afterCreate:function(contestant, options) {
         var contestPub = sequelize.models.contest.findById(contestant.contestId)
         .then(contest => {
-          return contest.publicKey;          
+          return contest.publicKey;
         })
         var user = contestPub.then(contestPub => {
           return sequelize.models.user.findById(contestant.userId)
         })
 
         Promise.all([contestPub, user]).then(([_to, user])=> {
+          web3.unlockAccount(user.publicKey, user.password)
           console.log(contestant.contestId, contestant.userId);
           console.log(_to, user.publicKey, contestant.bid);
           web3.transfer(_to, user.publicKey, contestant.bid);
