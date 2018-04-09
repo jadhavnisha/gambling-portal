@@ -26,11 +26,13 @@ $(window).on('load',function(){
 
 function show() {
   $('#chain-password').attr('type', 'text');
-  $('#eye').attr('src', 'images/eye-close.png');
+  $('#eye').attr('title', 'Hide Password');
+  $('#eye').attr('src', '/images/eye-close.png');
 
 }
 
 function hide() {
   $('#chain-password').attr('type', 'password');
-  $('#eye').attr('src', 'images/eye-open.png');
+  $('#eye').attr('title', 'Show Password');
+  $('#eye').attr('src', '/images/eye-open.png');
 }

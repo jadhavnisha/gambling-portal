@@ -8,7 +8,7 @@ router.use(function(req,res,next){
   next();
 })
 
-/* POST participate in contest */
+/* POST participate in contest - place bid*/
 router.post('/contestant', function(req, res, next) {
   console.log(req.body);
   if(req.body.bid && req.body.contestId) {
@@ -17,6 +17,7 @@ router.post('/contestant', function(req, res, next) {
       prediction: req.body.prediction,
       userId: req.session.userId,
       contestId: parseInt(req.body.contestId),
+      chainPassword: req.body.chainPassword,
     }
 
     return models.contestant
@@ -35,7 +36,7 @@ router.get('/contestants', function(req, res, next) {
     return models.contest.findOne({
       include: [{
                   model: models.user,
-              }],
+              }], 
       where: {id:parseInt(req.query.contestId)}
     })
     .then(contestants => {

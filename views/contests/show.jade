@@ -62,6 +62,14 @@ block content
                     option Low
                 | 
                 .form-group
-                  input#bid.form-control(placeholder="Bid Amount", name="bid", type="number", min="10", max="1000" required="required")
-                // Change this to a button or input when using this as a form
-                button.btn.btn-primary(type='submit') BID
+                  input#bid.form-control(placeholder="Bid Amount", name="bid", type="number", min="10", max= user.balance > 10000 ? "10000" : "#{user.balance}" required="required", onkeydown="javascript: return event.keyCode == 69 ? false : true")
+                | 
+                p.bg-warning.text-muted.center-text Your Blockchain password is required to unloack the wallet and place the bid.
+                .row
+                  .col-md-11
+                    .form-group
+                      input#chain-password.col-md-10.form-control.input-sm(type='password', name='chainPassword', placeholder='Block-Chain Password*', required='required')
+                  | 
+                  img#eye(src="/images/eye-open.png", title="Show Password")
+                | 
+                button.btn.btn-primary(type='submit', style="margin-top: 10px") BID
