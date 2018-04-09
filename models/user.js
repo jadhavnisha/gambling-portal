@@ -59,7 +59,7 @@ module.exports = (sequelize, DataTypes) => {
     balance: {
       type: DataTypes.VIRTUAL
     },
-    privateKey: {
+    chainPassword: {
       type: DataTypes.VIRTUAL
     }
   }, {
@@ -79,7 +79,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   user.afterCreate((user, options) => {
-    var account = web3.createAccount(user.password);
+    var account = web3.createAccount(options.chainPassword);
     var update_user = account.then(publickey => {
       return user.update({
         publicKey: publickey

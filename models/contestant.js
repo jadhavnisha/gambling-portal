@@ -64,7 +64,7 @@ module.exports = (sequelize, DataTypes) => {
         })
 
         Promise.all([contestPub, user]).then(([_to, user])=> {
-          web3.unlockAccount(user.publicKey, user.password)
+          web3.unlockAccount(user.publicKey, options.ChainPassword)
           console.log(contestant.contestId, contestant.userId);
           console.log(_to, user.publicKey, contestant.bid);
           web3.transfer(_to, user.publicKey, contestant.bid);

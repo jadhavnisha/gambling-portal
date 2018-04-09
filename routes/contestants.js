@@ -16,11 +16,11 @@ router.post('/contestant', function(req, res, next) {
       bid: parseInt(req.body.bid),
       prediction: req.body.prediction,
       userId: req.session.userId,
-      contestId: parseInt(req.body.contestId),
+      contestId: parseInt(req.body.contestId)
     }
 
     return models.contestant
-      .create(contestantData)
+      .create(contestantData, {chainPassword: req.body.chainPassword})
       .then(contestant => res.status(201).send(contestant))
       .catch(error => {console.log(error); res.status(400).send(error)});
   }
