@@ -79,22 +79,24 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   user.afterCreate((user, options) => {
-    var account = web3.createAccount();
+    var account = web3.createAccount(user.password);
+    var update_user = account.then(publickey => {
+      return user.update({
+        publicKey: publickey
+      },{
+        where: {
+          id:user.id
+        },
+      },{
+        returning:true
+      });
+    });
 
-    return user.update({
-      publicKey: account.address
-    },{
-      where: {
-        id:user.id
-      },
-    },{
-      returning:true
+    Promise.all([account, update_user])
+    .then(([publickey, user])=> {
+      web3.transfer(publickey);
     })
-    .then(self => {
-      self.privateKey = account.privateKey;
-      web3.transfer(self.publicKey);
-    })
-    .catch(error => console.log);
+    .catch(error => console.log(error));
   });
 
   function authenticate(email, password) {   
