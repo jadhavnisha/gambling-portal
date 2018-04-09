@@ -3,85 +3,94 @@ extends ../layout
 block content
   if user.isAdmin
     .table-title Contest to Start
+    if createdContests.length
+      .table-responsive
+        table#active-contests-list.table.table-bordered
+          thead
+            tr
+              th(colspan="2") Name
+              | 
+              th Remarks / Information
+              | 
+              th Action
+          | 
+          tbody
+            each contest in createdContests
+              tr
+                td.contest-thumbnail
+                  img.contest-thumbnail(src="/images/#{contest.name}.jpg")
+                | 
+                td #{contest.name}
+                | 
+                td
+                | 
+                td
+                  button.contest-start-draw.btn.btn-warning(value="#{contest.id}") START
+    else
+      .no-records.center-text No records found
+  .table-title Active Contests
+  if activeContest.length
     .table-responsive
       table#active-contests-list.table.table-bordered
         thead
           tr
             th(colspan="2") Name
-            |       
-            th Remarks / Information
-            |       
+            | 
+            th Started At
+            | 
+            th Draw Time
+            | 
+            th # Players
+            | 
             th Action
-        |   
+        | 
         tbody
-          each contest in createdContests
+          each contest in activeContest
             tr
               td.contest-thumbnail
                 img.contest-thumbnail(src="/images/#{contest.name}.jpg")
-              |     
+              | 
               td #{contest.name}
-              |     
-              td
+              | 
+              td #{contest.startTime}
+              | 
+              td In next 2 hours
+              | 
+              td 7
               | 
               td
-                button.contest-start-draw.btn.btn-warning(value="#{contest.id}") START
-  .table-title Active Contests
-  .table-responsive
-    table#active-contests-list.table.table-bordered
-      thead
-        tr
-          th(colspan="2") Name
-          |       
-          th Started At
-          |       
-          th Draw Time
-          |       
-          th # Players
-          | 
-          th Action
-      |   
-      tbody
-        each contest in activeContest
-          tr
-            td.contest-thumbnail
-              img.contest-thumbnail(src="/images/#{contest.name}.jpg")
-            |     
-            td #{contest.name}
-            |       
-            td #{contest.startTime}
-            |       
-            td In next 2 hours
-            |       
-            td 7
-            | 
-            td 
-              if user.isAdmin
-                button.contest-start-draw.btn.btn-warning(value="#{contest.id}") DRAW
-              else
-                button.btn.btn-warning(value="#{contest.id}", onclick="window.open('/contests/#{contest.id}', '_self');") BID
+                if user.isAdmin
+                  button.contest-start-draw.btn.btn-warning(value="#{contest.id}") DRAW
+                else
+                  button.btn.btn-warning(value="#{contest.id}", onclick="window.open('/contests/#{contest.id}', '_self');") BID
+  else
+    .no-records.center-text No records found
   .table-title Finished Contests
-  .table-responsive
-    table#finished-contests-list.table.table-bordered
-      thead
-        tr
-          th(colspan="2") Name
-          |       
-          th Started At
-          |       
-          th Drawn At
-          |       
-          th # Players
-      |   
-      tbody
-        each contest in finishedContest
+  if finishedContest.length
+    .table-responsive
+      table#finished-contests-list.table.table-bordered
+        thead
           tr
-            td.contest-thumbnail
-              img.contest-thumbnail(src="/images/#{contest.name}.jpg")
-            |       
-            td #{contest.name}
-            |       
-            td #{contest.startTime}
-            |       
-            td #{contest.drawTime}
-            |       
-            td 7
+            th(colspan="2") Name
+            | 
+            th Started At
+            | 
+            th Drawn At
+            | 
+            th # Players
+        | 
+        tbody
+          each contest in finishedContest
+            tr
+              td.contest-thumbnail
+                img.contest-thumbnail(src="/images/#{contest.name}.jpg")
+              | 
+              td #{contest.name}
+              | 
+              td #{contest.startTime}
+              | 
+              td #{contest.drawTime}
+              | 
+              td 7
+  else
+    .no-records.center-text No records found

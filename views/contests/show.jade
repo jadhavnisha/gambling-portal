@@ -7,38 +7,39 @@ block content
     .row
       .col-md-4
         strong #{contest.name}
-      |     
+      | 
       .col-md-4
         strong
           | Started At: #{contest.startTime}
           strong
-      |     
+      | 
       .col-md-4
         strong
           | Draw Time: 1.00 PM
-          strong  
+          strong
   .row
     if contest.users.length
-      .table-responsive(class= isParticipated ? "col-md-12" : "col-md-8")
-        table.table.table-bordered.table-fixed
-          thead
-            tr
-              th PlayerName
-              |       
-              th Prediction
-              |       
-              th Current Bet
-          |   
-          tbody
-            each u in contest.users
-              tr(class= u.id == user.id ? "current-user-bid" : "")
-                td #{u.firstName + ' ' + u.lastName}
-                |               
-                td #{u.contestant.prediction}
+      div(class= isParticipated ? "col-md-12" : "col-md-8")
+        .table-responsive
+          table.table.table-bordered.table-fixed
+            thead
+              tr
+                th PlayerName
                 | 
-                td
-                  | #{u.contestant.bid}
-                  span.glyphicon.glyphicon-bitcoin
+                th Prediction
+                | 
+                th Current Bet
+            | 
+            tbody
+              each u in contest.users
+                tr(class= u.id == user.id ? "current-user-bid" : "")
+                  td #{u.firstName + ' ' + u.lastName}
+                  | 
+                  td #{u.contestant.prediction}
+                  | 
+                  td
+                    | #{u.contestant.bid}
+                    span.glyphicon.glyphicon-bitcoin
     else
       .col-md-8
         p.center-text.game-title.bid-alert No bid has been placed, be the first one to bid this contest.
@@ -46,7 +47,7 @@ block content
       .col-md-4
         .panel.panel-default
           .panel-heading
-            h3.panel-title Place your bid
+            h3.panel-title(style="text-align: center;") place your BID here
           | 
           .panel-body
             form(role='form', method='post', action='/contestant')
@@ -57,7 +58,7 @@ block content
                     option(value='') -- Predict --
                     | 
                     option High
-                    |       
+                    | 
                     option Low
                 | 
                 .form-group

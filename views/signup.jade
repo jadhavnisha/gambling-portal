@@ -32,8 +32,20 @@ block content
                 .form-group
                   input#password_confirmation.form-control.input-sm(type='password', name='password_confirmation', placeholder='Confirm Password*', required='required')
             | 
+            .form-group
+              p.center-text
+                strong.text-danger Important !
+              p.center-text.text-warning We’re a non-custodial wallet which means we can’t reset your password. Your Block-chain password phrase is the only way for you for wallet transactions otherwise you will loose your funds.
             | 
-            input.btn.btn-info.btn-block(type='submit', value='Sign up')
+            .row
+              .col-md-11
+                .form-group
+                  input#chain-password.col-md-10.form-control.input-sm(type='password', name='chainPassword', placeholder='Block-Chain Password*', required='required')
+              | 
+              img#eye(src="images/eye-open.png")
+            | 
+            | 
+            input.btn.btn-info.btn-block(type='submit', value='Sign up', style='margin-top: 10px')
             | 
             p.right-text
               | Already a Member?

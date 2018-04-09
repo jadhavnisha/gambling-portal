@@ -11,14 +11,26 @@ $(window).on('load',function(){
 		});
   });
 
-  // if($('.alert-warning').length && (/Signed up/).test($('.alert-warning')[0].innerText)){
-  //   console.log(true);
-  //   $.ajax({
-  //     url: '/download',
-  //     type: 'GET',
-  //     success: function(data) {
-  //       window.open('/contests', '_self');
-  //     }
-  //   });
-  // }
+  var pwShown = 0;
+
+  $('#eye').click(function(){
+    if(pwShown){
+      pwShown = 0;
+      hide();
+    }else{
+      pwShown = 1;
+      show();
+    }
+  });
 });
+
+function show() {
+  $('#chain-password').attr('type', 'text');
+  $('#eye').attr('src', 'images/eye-close.png');
+
+}
+
+function hide() {
+  $('#chain-password').attr('type', 'password');
+  $('#eye').attr('src', 'images/eye-open.png');
+}

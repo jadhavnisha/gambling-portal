@@ -29,6 +29,7 @@ router.post('/signup', function(req, res, next) {
     lastName: req.body.lastName,
     email: req.body.email,
     password: req.body.password,
+    chainPassword: req.body.chainPassword
   }
 
   return models.user
