@@ -14,7 +14,7 @@ router.post('/signup', function(req, res, next) {
   return models.user
     .create(userData,{chainPassword: req.body.chainPassword})
     .then(user => res.status(201).send(user))
-    .catch(error => res.status(400).send(error));
+    .catch(error => {console.log(error); return res.status(400).send(error)});
 });
 
 router.post('/signin', function(req, res, next) {

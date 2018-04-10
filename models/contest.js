@@ -1,5 +1,5 @@
 'use strict';
-const web3 = require('../on-chain/server');
+const web3 = require('../on-chain/token');
 
 module.exports = (sequelize, DataTypes) => {
   var contest = sequelize.define('contest', {
