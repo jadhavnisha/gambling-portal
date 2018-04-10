@@ -60,7 +60,7 @@ module.exports = (sequelize, DataTypes) => {
   
   contest.afterCreate((contest, options) => {
     var account = web3.createAccount();
-    var update_contest = account.then(publickey => {
+    return account.then(publickey => {
       return contest.update({
         publicKey: publickey
       },{
@@ -69,11 +69,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },{returning:true})
     })
-
-    return Promise.all([account, update_contest])
-    .then(([publickey, contest])=> {
-      web3.transfer(publickey);
-    })
+    .then(result => result)
     .catch(error => console.log(error));
   });
 

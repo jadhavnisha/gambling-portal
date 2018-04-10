@@ -17,11 +17,10 @@ router.post('/contestant', function(req, res, next) {
       prediction: req.body.prediction,
       userId: req.session.userId,
       contestId: parseInt(req.body.contestId),
-      chainPassword: req.body.chainPassword,
     }
 
     return models.contestant
-      .create(contestantData)
+      .create(contestantData, {chainPassword: req.body.chainPassword})
       .then(contestant => {
         req.flash('info', 'Your bid has been placed successfully.!!');
         res.redirect('/contests/'+contestant.contestId);

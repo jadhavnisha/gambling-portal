@@ -33,7 +33,7 @@ router.post('/signup', function(req, res, next) {
   }
 
   return models.user
-    .create(userData)
+    .create(userData,{chainPassword: req.body.chainPassword})
     .then(user => {
       req.flash('info', 'Signed up successfuly..!!');
       setTimeout(function(){
@@ -82,6 +82,7 @@ router.get('/dashboard', function(req, res, next) {
     res.render('dashboard', {user: user, games: games})
   })
   .catch(error => res.status(400).send(error));
+  }
 });
 
 router.post('/signin', function(req, res, next) {
