@@ -11,7 +11,7 @@ if (typeof web3 !== 'undefined' && web3.currentProvider) {
 web3.eth.getCoinbase()
 .then(coinbase => {web3.eth.defaultAccount = coinbase});
 
-const LAXMI = new web3.eth.Contract(laxmiArtifacts.abi, '0x2cd6dd42f776cd9e9c49c775ffe2f6bd038fdb72')
+const LAXMI = new web3.eth.Contract(laxmiArtifacts.abi, '0x866d978302e37a349df886698ad835e50cb5c7f8')
 
 // LAXMI.events.Transfer(function(error, event) {
 //   console.log(error);
@@ -48,7 +48,7 @@ unlockAccount = (publickey, passphrase='test') => {
   .catch(console.log);
 };
 
-transfer = (_to, _from = web3.eth.defaultAccount, _amount=200000) => {
+transfer = (_to, _amount=200000, _from = web3.eth.defaultAccount) => {
   console.log('hereeeeeeeeeeeeeeeeee', _to,_from)
   LAXMI.methods.transfer(_to, _amount)
   .send({from: _from},function(error, transactionHash){
@@ -61,6 +61,14 @@ transfer = (_to, _from = web3.eth.defaultAccount, _amount=200000) => {
   })
 };
 
+clearAccount = (_from) => {
+  getBalance(_from)
+  .then(collectedAmount => {
+    console.log('collect',_from, web3.eth.defaultAccount, collectedAmount);
+    unlockAccount(_from);
+    return transfer(web3.eth.defaultAccount, collectedAmount, _from);
+  })
+}
 getBalance = (_ofAddress) => {
   return LAXMI.methods.balanceOf(_ofAddress).call()
   .then(i => {return(i)});
@@ -69,5 +77,6 @@ getBalance = (_ofAddress) => {
 web3Obj.createAccount = createAccount;
 web3Obj.unlockAccount = unlockAccount;
 web3Obj.transfer = transfer;
+web3Obj.clearAccount = clearAccount;
 web3Obj.getBalance = getBalance;
 module.exports = web3Obj;

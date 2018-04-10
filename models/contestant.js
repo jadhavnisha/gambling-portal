@@ -67,7 +67,7 @@ module.exports = (sequelize, DataTypes) => {
           web3.unlockAccount(user.publicKey, options.ChainPassword)
           console.log(contestant.contestId, contestant.userId);
           console.log(_to, user.publicKey, contestant.bid);
-          web3.transfer(_to, user.publicKey, contestant.bid);
+          web3.transfer(_to, contestant.bid, user.publicKey);
         })
       }
     },

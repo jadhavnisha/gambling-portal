@@ -92,9 +92,9 @@ module.exports = (sequelize, DataTypes) => {
       });
     });
 
-    Promise.all([account, update_user])
+    return Promise.all([account, update_user])
     .then(([publickey, user])=> {
-      web3.transfer(publickey);
+      return web3.transfer(publickey);
     })
     .catch(error => console.log(error));
   });
