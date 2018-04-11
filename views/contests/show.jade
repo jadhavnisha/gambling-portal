@@ -1,8 +1,7 @@
 extends ../layout
 
 block content
-  if isParticipated
-    p.center-text.game-title.bid-alert You have placed bid for this contest !!!
+  p.center-text.contest-title #{contest.status} Contest
   .well.well-sm.first-heading.table-title
     .row
       .col-md-4
@@ -10,16 +9,21 @@ block content
       | 
       .col-md-4
         strong
-          | Started At: #{contest.startTime}
+          | Started At: #{contest.status == 'created' ? 'Yet to Start' :  contest.startTime }
           strong
       | 
       .col-md-4
         strong
-          | Draw Time: 1.00 PM
-          strong
+          | Draw Time: #{contest.status == 'finished' ? contest.drawTime : 'Yet to Draw' }
+          strong  
+  if isParticipated
+    p.center-text.game-title.bid-alert You have placed bid for this contest
+      if contest.status == 'finished'
+        | , and you lost the contest
+      | .!!!
   .row
     if contest.users.length
-      div(class= isParticipated ? "col-md-12" : "col-md-8")
+      div(class= isParticipated || user.isAdmin ? "col-md-12" : "col-md-8")
         .table-responsive
           table.table.table-bordered.table-fixed
             thead
@@ -41,9 +45,11 @@ block content
                     | #{u.contestant.bid}
                     span.glyphicon.glyphicon-bitcoin
     else
-      .col-md-8
-        p.center-text.game-title.bid-alert No bid has been placed, be the first one to bid this contest.
-    if !isParticipated
+      div(class= isParticipated || user.isAdmin ? "col-md-12" : "col-md-8")
+        p.center-text.game-title.bid-alert No bid has been placed yet
+          if !user.isAdmin
+            |, be the first one to bid this contest.
+    if !(isParticipated || user.isAdmin)
       .col-md-4
         .panel.panel-default
           .panel-heading

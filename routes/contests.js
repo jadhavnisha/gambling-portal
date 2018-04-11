@@ -3,27 +3,20 @@ const router = express.Router();
 const models = require('../models/index');
 const contestService = require('../services/contest_service');
 
-/* list contests */
-// router.get('/contests', function(req, res, next) {
-//   var whereCondition = { status: req.query.filter || ['created', 'active', 'finished'] };
-//   if(req.query.gameId)
-//     whereCondition['gameId'] = parseInt(req.query.gameId);
-//   return models.contest.findAll({
-//     where: whereCondition
-//   })
-//   .then(contests => res.render('contests', {contests: contests, user: req.user}))
-//   .catch(error => res.status(400));
-// });
-
+/*
+Fetch all the contests,including its associated users and contestants
+*/
 router.get('/contests', function(req, res, next) {
-  var createdContests = models.contest.getByStatusAndId('created', 1);
-  var activeContest = models.contest.getByStatusAndId('active', 1);
-  var finishedContest = models.contest.getByStatusAndId('finished', 1);
-
-  return Promise.all([createdContests, activeContest, finishedContest])
-  .then(([createdContests, activeContest, finishedContest]) => 
-    res.render('contests/index', {createdContests: createdContests, activeContest: activeContest, finishedContest: finishedContest, user: req.user}))
-  .catch(error => res.status(400).send(error));
+  return models.contest.findAll({
+    include: [{
+      model: models.user,
+    }],
+    where: {gameId: 1},
+  })
+  .then(contests => {
+    res.render('contests/index', {contests: contests, user: req.user})
+  })
+  .catch(error => {console.log(error);return res.status(400).send(error)});
 });
 
 /* render contest creation form */
@@ -35,11 +28,11 @@ router.get('/contests/:id', function(req, res, next) {
   var contest_id = req.params.id;
   var isParticipated = models.contestant.isUserParticipated(contest_id, req.user.id);
   var contestWithContestants = models.contest.findOne({
-      include: [{
-                  model: models.user,
-              }],
-      where: {id: parseInt(contest_id)}
-    })
+    include: [{
+      model: models.user,
+    }],
+    where: {id: parseInt(contest_id)}
+  })
 
   return Promise.all([isParticipated, contestWithContestants])
   .then(([isParticipated, contestWithContestants]) =>

@@ -28,8 +28,7 @@ router.post('/signup', function(req, res, next) {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
-    password: req.body.password,
-    chainPassword: req.body.chainPassword
+    password: req.body.password
   }
 
   return models.user
@@ -82,7 +81,6 @@ router.get('/dashboard', function(req, res, next) {
     res.render('dashboard', {user: user, games: games})
   })
   .catch(error => res.status(400).send(error));
-  }
 });
 
 router.post('/signin', function(req, res, next) {

@@ -72,3 +72,10 @@ table>thead{
 #eye{
   width: 25px;
 }
+
+.contest-title{
+  font-weight: bolder;
+  font-size: 30;
+  background-color: #F08;
+  color: #000;
+}

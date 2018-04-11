@@ -10,7 +10,6 @@ router.use(function(req,res,next){
 
 /* POST participate in contest - place bid*/
 router.post('/contestant', function(req, res, next) {
-  console.log(req.body);
   if(req.body.bid && req.body.contestId) {
     var contestantData = {
       bid: parseInt(req.body.bid),

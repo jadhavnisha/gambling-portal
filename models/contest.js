@@ -1,5 +1,6 @@
 'use strict';
 const web3 = require('../on-chain/server');
+const models = require('./index');
 
 module.exports = (sequelize, DataTypes) => {
   var contest = sequelize.define('contest', {
@@ -119,24 +120,8 @@ module.exports = (sequelize, DataTypes) => {
     })
   }
 
-  function getByStatusAndId(status, contest_id){
-    var whereCondition = {status: status, gameId: contest_id };
-    return contest.findAll({
-      where: whereCondition
-    })
-    .then(contest => {
-      if(contest == null) {
-        var err = new Error("User not found");
-        err.status = 401;
-        throw err;
-      }
-      return contest
-    })
-  }
-
   contest.setEncryptionKey = setEncryptionKey;
   contest.setResult = setResult;
   contest.getById = getById;
-  contest.getByStatusAndId = getByStatusAndId;
   return contest;
 };

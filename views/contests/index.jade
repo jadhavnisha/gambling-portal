@@ -1,6 +1,16 @@
 extends ../layout
 
 block content
+  - var createdContests = []
+  - var activeContests = []
+  - var finishedContests = []
+  each contest in contests
+    if contest.status == 'created'
+      - createdContests.push(contest)
+    else if contest.status == 'active'
+      - activeContests.push(contest)
+    else
+      - finishedContests.push(contest)
   if user.isAdmin
     .table-title Contest to Start
     if createdContests.length
@@ -20,7 +30,8 @@ block content
                 td.contest-thumbnail
                   img.contest-thumbnail(src="/images/#{contest.name}.jpg")
                 | 
-                td #{contest.name}
+                td
+                  a(href="/contests/#{contest.id}") #{contest.name}
                 | 
                 td
                 | 
@@ -29,7 +40,7 @@ block content
     else
       .no-records.center-text No records found
   .table-title Active Contests
-  if activeContest.length
+  if activeContests.length
     .table-responsive
       table#active-contests-list.table.table-bordered
         thead
@@ -45,18 +56,19 @@ block content
             th Action
         | 
         tbody
-          each contest in activeContest
+          each contest in activeContests
             tr
               td.contest-thumbnail
                 img.contest-thumbnail(src="/images/#{contest.name}.jpg")
               | 
-              td #{contest.name}
+              td
+                a(href="/contests/#{contest.id}") #{contest.name}
               | 
               td #{contest.startTime}
               | 
               td In next 2 hours
               | 
-              td 7
+              td #{contest.users.length}
               | 
               td
                 if user.isAdmin
@@ -66,7 +78,7 @@ block content
   else
     .no-records.center-text No records found
   .table-title Finished Contests
-  if finishedContest.length
+  if finishedContests.length
     .table-responsive
       table#finished-contests-list.table.table-bordered
         thead
@@ -80,17 +92,18 @@ block content
             th # Players
         | 
         tbody
-          each contest in finishedContest
+          each contest in finishedContests
             tr
               td.contest-thumbnail
                 img.contest-thumbnail(src="/images/#{contest.name}.jpg")
               | 
-              td #{contest.name}
+              td
+                a(href="/contests/#{contest.id}") #{contest.name}
               | 
               td #{contest.startTime}
               | 
               td #{contest.drawTime}
               | 
-              td 7
+              td #{contest.users.length}
   else
     .no-records.center-text No records found
