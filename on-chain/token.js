@@ -18,25 +18,24 @@ const LAXMI = new web3.eth.Contract(laxmiArtifacts.abi, '0x646ca4f1c9339b7f91d1d
 // .on('error', console.error);
 
 createAccount = (passphrase='test') => {
-  // return web3.eth.accounts.create();
   return web3.eth.personal.newAccount(passphrase).then(publickey => {
-    console.log('publickey===',publickey);
     return publickey;
   });
 };
 
 unlockAccount = (publickey, passphrase='test') => {
-  web3.eth.personal.unlockAccount(publickey, passphrase, 200)
-  web3.eth.sendTransaction({
-      from: web3.eth.defaultAccount,
-      gasPrice: "20000000000",
-      gas: "21000",
-      to: publickey,
-      value: "1800000000000000",
-      data: ""
-  },passphrase)
+  return web3.eth.personal.unlockAccount(publickey, passphrase, 200)
+  .then(result => {
+    return web3.eth.sendTransaction({
+        from: web3.eth.defaultAccount,
+        gasPrice: "20000000000",
+        gas: "21000",
+        to: publickey,
+        value: "1800000000000000",
+        data: ""
+    },passphrase)
+  })
   .then(console.log)
-  .catch(console.log);
 };
 
 transfer = (_to, _amount=200000, _from = web3.eth.defaultAccount) => {
@@ -53,10 +52,14 @@ transfer = (_to, _amount=200000, _from = web3.eth.defaultAccount) => {
 };
 
 clearAccount = (_from) => {
-  getBalance(_from)
-  .then(collectedAmount => {
+  var collect = getBalance(_from);
+  var unlock = collect.then(collectedAmount => {
+    return unlockAccount(_from);
+  })
+
+  return Promise.all([collect, unlock])
+  .then(([collectedAmount, unlockedAccount]) => {
     console.log('collect',_from, web3.eth.defaultAccount, collectedAmount);
-    unlockAccount(_from);
     return transfer(web3.eth.defaultAccount, collectedAmount, _from);
   })
 }
