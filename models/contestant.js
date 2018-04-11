@@ -1,5 +1,5 @@
 'use strict';
-const web3 = require('../on-chain/server');
+const web3 = require('../on-chain/token');
 
 module.exports = (sequelize, DataTypes) => {
   var contestant = sequelize.define('contestant', {
@@ -63,11 +63,17 @@ module.exports = (sequelize, DataTypes) => {
           return sequelize.models.user.findById(contestant.userId)
         })
 
-        Promise.all([contestPub, user]).then(([_to, user])=> {
-          web3.unlockAccount(user.publicKey, options.ChainPassword)
-          console.log(contestant.contestId, contestant.userId);
-          console.log(_to, user.publicKey, contestant.bid);
-          web3.transfer(_to, contestant.bid, user.publicKey);
+        var unlock = user.then(user=> {
+          return web3.unlockAccount(user.publicKey, options.chainPassword);
+        })
+
+        return Promise.all([contestPub, user, unlock])
+        .then(([_to, user, unlockedAccount])=> {
+          return web3.transfer(_to, contestant.bid, user.publicKey);
+        })
+        .catch(error => {
+          console.log(error);
+          return error;
         })
       }
     },

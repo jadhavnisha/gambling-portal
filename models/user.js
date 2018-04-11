@@ -1,6 +1,6 @@
 'use strict';
 const bcrypt = require('bcrypt');
-const web3 = require('../on-chain/server');
+const web3 = require('../on-chain/token');
 
 module.exports = (sequelize, DataTypes) => {
   var user = sequelize.define('user', {

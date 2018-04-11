@@ -1,8 +1,8 @@
 const models = require('../models/index');
 const cryptoObj = require('../helpers/crypto');
 const contestService = {};
-const web3 = require('../on-chain/game');
-const web3Obj = require('../on-chain/server');
+const web3 = require('../on-chain/contest');
+const web3Obj = require('../on-chain/token');
 
 start = function(contest_id){ 
   var passphrase = cryptoObj.randomValueHex();
@@ -10,7 +10,7 @@ start = function(contest_id){
   .then(contest => {  
     var result = Math.floor(Math.random()*(6*contest.config.number_of_dice));
     var encrypted_result = cryptoObj.encrypt(result.toString(), passphrase);
-    web3.setGameInstance(contest.publicKey, encrypted_result);
+    web3.setContestResult(contest.publicKey, encrypted_result);
     return contest;
   }); 
 }
@@ -18,7 +18,7 @@ start = function(contest_id){
 draw = function(contest_id){
   var contestByID = models.contest.getById(contest_id)
   var gameInstance= contestByID.then(contest => {
-    return web3.getGameInstance(contest.publicKey)
+    return web3.getContestResult(contest.publicKey)
   });
   
   return Promise.all([contestByID, gameInstance])
@@ -43,9 +43,9 @@ draw = function(contest_id){
 sendReward = function(contest) {
   var prediction;
   if(contest.result < ((contest.config.number_of_dice*6)/2))
-    prediction = 'lo'
+    prediction = 'low'
   else
-    prediction = 'hi'
+    prediction = 'high'
 
   console.log('---------------3', prediction);
   return models.contest.findOne({

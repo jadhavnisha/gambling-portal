@@ -13,7 +13,7 @@ router.post('/contestant', function(req, res, next) {
   if(req.body.bid && req.body.contestId) {
     var contestantData = {
       bid: parseInt(req.body.bid),
-      prediction: req.body.prediction,
+      prediction: req.body.prediction.toLowerCase(),
       userId: req.session.userId,
       contestId: parseInt(req.body.contestId),
     }
