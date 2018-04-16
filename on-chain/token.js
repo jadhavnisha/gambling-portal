@@ -2,20 +2,20 @@ const laxmiArtifacts = require('./build/contracts/Laxmi.json');
 var web3 = require('./server.js');
 const web3Obj = {}
 
-const LAXMI = new web3.eth.Contract(laxmiArtifacts.abi, '0x646ca4f1c9339b7f91d1d9852f9a5205a2088b13')
+const LAXMI = new web3.eth.Contract(laxmiArtifacts.abi, '0xf9a7e19746144ed356acf8726f3910cbb45008e3')
 
-// LAXMI.events.Transfer(function(error, event) {
-//   console.log(error);
-//   console.log(event);
-// });
-// .on('data', function(event){
-//   console.log('data',event); // same results as the optional callback above
-// })
-// .on('changed', function(event){
-//   // remove event from local database
-//   console.log('changed',event)
-// })
-// .on('error', console.error);
+LAXMI.events.Transfer(function(error, event) {
+  console.log(error);
+  console.log(event);
+})
+.on('data', function(event){
+  console.log('data',event); // same results as the optional callback above
+})
+.on('changed', function(event){
+  // remove event from local database
+  console.log('changed',event)
+})
+.on('error', console.error);
 
 createAccount = (passphrase='test') => {
   return web3.eth.personal.newAccount(passphrase).then(publickey => {
