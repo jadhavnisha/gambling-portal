@@ -17,13 +17,13 @@ LAXMI.events.Transfer(function(error, event) {
 })
 .on('error', console.error);
 
-createAccount = (passphrase='test') => {
+createAccount = (passphrase=process.env.CONTEST_PASS) => {
   return web3.eth.personal.newAccount(passphrase).then(publickey => {
     return publickey;
   });
 };
 
-unlockAccount = (publickey, passphrase='test') => {
+unlockAccount = (publickey, passphrase=process.env.CONTEST_PASS) => {
   return web3.eth.personal.unlockAccount(publickey, passphrase, 200)
   .then(result => {
     return web3.eth.sendTransaction({

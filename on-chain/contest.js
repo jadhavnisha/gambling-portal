@@ -17,7 +17,7 @@ setContestResult = (_contestAddress, encrypted_result) => {
 };
 
 getContestResult = (_contestAddress) => {
-  return CONTESTS.methods.getContestResult(_contestAddress)
+  return CONTESTS.methods.getResult(_contestAddress)
   .call({from: web3.eth.defaultAccount})
   .then(result => {
     console.log('adadaa',result);
