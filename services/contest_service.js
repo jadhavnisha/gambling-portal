@@ -24,7 +24,12 @@ draw = function(contest_id){
   return Promise.all([contestByID, gameInstance])
   .then(function([contest, encrypted_result]) {
     var decrypted_result = cryptoObj.decrypt(encrypted_result.toString(), contest.config.encryption_key);
-    return models.contest.setResult(decrypted_result, contest.id)
+    var verifiedResult;
+    if(decrypted_result < ((contest.config.number_of_dice*6)/2))
+      verifiedResult = 'low'
+    else
+      verifiedResult = 'high'
+    return models.contest.setResult(decrypted_result, verifiedResult, contest)
   })
   .then(rows => {
     if(rows[0]==0){
@@ -41,18 +46,12 @@ draw = function(contest_id){
 }
 
 sendReward = function(contest) {
-  var prediction;
-  if(contest.result < ((contest.config.number_of_dice*6)/2))
-    prediction = 'low'
-  else
-    prediction = 'high'
-
-  console.log('---------------3', prediction);
+  console.log('---------------3', contest.config.verified_result);
   return models.contest.findOne({
     include: [{
                 model: models.user,
                 through: {
-                  where:{'prediction': prediction}
+                  where:{'prediction': contest.config.verified_result}
                 }
             }],
     where: {

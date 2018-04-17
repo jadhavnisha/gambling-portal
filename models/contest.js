@@ -90,20 +90,13 @@ module.exports = (sequelize, DataTypes) => {
     .catch(error => console.log);
   }
 
-  function setResult(result, contest_id) {
-    return contest.update({
-      result: result,
-      drawTime: Date.now(),
-      status: 'finished'
-    },{
-      where: {
-        id:contest_id,
-        status: 'active'
-      },
-    },{
-      returning:true,
-      plain: true
-    })
+  function setResult(result, verifiedResult, contest) {
+    contest.result = result;
+    contest.drawTime = Date.now();
+    contest.status = 'finished';
+    contest.config['verified_result'] = verifiedResult;
+    contest.config = contest.config;
+    return contest.save()
     .then(self => self )
     .catch(error => console.log);
   }
