@@ -25,18 +25,14 @@ router.get('/admin/contests/create', function(req, res, next) {
 });
 
 router.get('/contests/:id', function(req, res, next) {
-  var contest_id = req.params.id;
-  var isParticipated = models.contestant.isUserParticipated(contest_id, req.user.id);
-  var contestWithContestants = models.contest.findOne({
+  return models.contest.findOne({
     include: [{
       model: models.user,
     }],
-    where: {id: parseInt(contest_id)}
+    where: {id: parseInt(req.params.id)}
   })
-
-  return Promise.all([isParticipated, contestWithContestants])
-  .then(([isParticipated, contestWithContestants]) =>
-    res.render('contests/show', {user: req.user, isParticipated: isParticipated, contest: contestWithContestants}))
+  .then(contestWithContestants =>
+    res.render('contests/show', {user: req.user, contest: contestWithContestants}))
   .catch(error => res.status(400).send(error));
 });
 

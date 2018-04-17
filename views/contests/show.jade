@@ -1,29 +1,43 @@
 extends ../layout
 
 block content
+  - var conetstant = {}
+  each u in contest.users
+    if u.id == user.id
+      - contestant = u.contestant
   p.center-text.contest-title #{contest.status} Contest
   .well.well-sm.first-heading.table-title
     .row
       .col-md-4
+        strong Name  : 
         strong #{contest.name}
+        br
+        strong Result : 
+        strong #{contest.config.verified_result}
       | 
       .col-md-4
         strong
-          | Started At: #{contest.status == 'created' ? 'Yet to Start' :  contest.startTime }
+          | Started At : #{contest.status == 'created' ? 'Yet to Start' :  contest.startTime }
           strong
       | 
       .col-md-4
         strong
-          | Draw Time: #{contest.status == 'finished' ? contest.drawTime : 'Yet to Draw' }
-          strong  
-  if isParticipated
-    p.center-text.game-title.bid-alert You have placed bid for this contest
+          | Draw Time : #{contest.status == 'finished' ? contest.drawTime : 'Yet to Draw' }
+          strong
+  .anouncement  
+    if contestant
       if contest.status == 'finished'
-        | , and you lost the contest
-      | .!!!
+        if contestant.prediction == contest.config.verified_result
+          p.center-text.game-title.bid-alert You WON 
+          img(src="/images/won.gif", style="width: 400px;height: 100px; ")
+        else 
+          p.center-text.game-title.bid-alert You LOST 
+          img(src="/images/lost.gif", style="width: 150px;height: 100px; ")
+      else
+        p.center-text.game-title.bid-alert You have placed bid for this contest
   .row
     if contest.users.length
-      div(class= isParticipated || user.isAdmin ? "col-md-12" : "col-md-8")
+      div(class= contestant || user.isAdmin ? "col-md-12" : "col-md-8")
         .table-responsive
           table.table.table-bordered.table-fixed
             thead
@@ -33,6 +47,9 @@ block content
                 th Prediction
                 | 
                 th Current Bet
+                if contest.status == 'finished'
+                  | 
+                  th Result
             | 
             tbody
               each u in contest.users
@@ -44,12 +61,19 @@ block content
                   td
                     | #{u.contestant.bid}
                     span.glyphicon.glyphicon-bitcoin
+                  if contest.status == 'finished'
+                    | 
+                    td
+                      if u.contestant.prediction == contest.config.verified_result
+                        | Won
+                      else
+                        | Lost
     else
-      div(class= isParticipated || user.isAdmin ? "col-md-12" : "col-md-8")
-        p.center-text.game-title.bid-alert No bid has been placed yet
+      div(class= contestant || user.isAdmin ? "col-md-12" : "col-md-8")
+        p.center-text.game-title.bid-alert No bid has been placed
           if !user.isAdmin
             |, be the first one to bid this contest.
-    if !(isParticipated || user.isAdmin)
+    if !(contest.status == 'finished' || contestant || user.isAdmin)
       .col-md-4
         .panel.panel-default
           .panel-heading

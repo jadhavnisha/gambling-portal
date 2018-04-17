@@ -85,16 +85,5 @@ module.exports = (sequelize, DataTypes) => {
     ]
   });
 
-  function isUserParticipated(contestId, userId){
-    var whereCondition = {contestId: contestId, userId: userId };
-    return contestant.count({
-      where: whereCondition
-    })
-    .then(contestant => {
-      return !!contestant;
-    })
-  }
-
-  contestant.isUserParticipated = isUserParticipated;
   return contestant;
 };

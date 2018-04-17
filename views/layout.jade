@@ -58,10 +58,9 @@ head
               li
                 a
                   if user.isAdmin
-                    | [ admin ]
-                  else
-                    span.glyphicon.glyphicon-bitcoin
-                    | #{user.balance}
+                    | [ admin ]  
+                  span.glyphicon.glyphicon-bitcoin
+                  | #{user.balance}                   
               li
                 a(href='/signout')
                   span.glyphicon.glyphicon-log-out
