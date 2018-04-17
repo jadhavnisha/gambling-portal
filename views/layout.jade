@@ -45,6 +45,8 @@ head
               if user.isAdmin
                 li
                   a(href='/admin/contests/create') Create Contest
+              li
+                a(href='') #{user.publicKey}
           |       
           ul.nav.navbar-nav.navbar-right
             if user
