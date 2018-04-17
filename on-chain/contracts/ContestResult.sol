@@ -20,7 +20,7 @@ contract ContestResult {
         contestAccounts.push(_contestAddress) -1;
     }
     
-    function getContestResult(address _contestAddress) view public returns (string) {
+    function getResult(address _contestAddress) view public returns (string) {
         return (contests[_contestAddress]);
     }    
 }
