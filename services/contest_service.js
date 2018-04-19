@@ -42,7 +42,7 @@ draw = function(contest_id){
   })
   .then(contest => sendReward(contest))
   .then(result => result)
-  .catch(error => error);
+  .catch(error => {console.log(error);return error});
 }
 
 sendReward = function(contest) {
