@@ -1,4 +1,5 @@
 'use strict';
+const models = require('./index');
 const web3 = require('../on-chain/token');
 
 module.exports = (sequelize, DataTypes) => {
