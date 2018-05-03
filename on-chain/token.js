@@ -2,12 +2,9 @@ const laxmiArtifacts = require('./build/contracts/Laxmi.json');
 var web3 = require('./server.js');
 const web3Obj = {}
 
-const LAXMI = new web3.eth.Contract(laxmiArtifacts.abi, '0xf9a7e19746144ed356acf8726f3910cbb45008e3')
+const LAXMI = new web3.eth.Contract(laxmiArtifacts.abi, '0x8754a63affb4f38cd697662f9c698b3e2c9aefcb')
 
-LAXMI.events.Transfer(function(error, event) {
-  console.log(error);
-  console.log(event);
-})
+LAXMI.events.Transfer()
 .on('data', function(event){
   console.log('data',event); // same results as the optional callback above
 })
@@ -41,14 +38,25 @@ unlockAccount = (publickey, passphrase=process.env.CONTEST_PASS) => {
 transfer = (_to, _amount=200000, _from = web3.eth.defaultAccount) => {
   console.log('hereeeeeeeeeeeeeeeeee', _to,_from)
   LAXMI.methods.transfer(_to, _amount)
-  .send({from: _from},function(error, transactionHash){
-    if(error) {
-      console.log(error);
-      return error;
-    }
-    console.log(transactionHash);
-    return transactionHash
+  .send({from: _from})
+  .on('transactionHash', function(hash){
+    console.log('transactionHash',hash);
   })
+  .on('receipt', function(receipt){
+    console.log('receipt',receipt);
+  })
+  .on('confirmation', function(confirmationNumber, receipt){
+    console.log('confirmationNumber',confirmationNumber);  
+  })
+  .on('error', console.error);
+  // .then(transactionHash => {
+  //   // console.log(transactionHash);
+  //   return transactionHash
+  // })
+  // .catch(error => {
+  //   console.log(error);
+  //   throw error;
+  // });
 };
 
 clearAccount = (_from) => {
