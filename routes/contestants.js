@@ -22,7 +22,9 @@ router.post('/contestant', function(req, res, next) {
       .create(contestantData, {chainPassword: req.body.chainPassword})
       .then(contestant => {
         req.flash('info', 'Your bid has been placed successfully.!!');
-        res.redirect('/contests/'+contestant.contestId);
+        setTimeout(function(){
+          res.redirect('/contests/'+contestant.contestId);
+        }, 30000);
       })
       .catch(error => {console.log(error); res.status(400).send(error)});
   }

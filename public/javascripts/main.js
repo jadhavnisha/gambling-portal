@@ -1,4 +1,21 @@
 $(window).on('load',function(){
+  $('#signup, #placeBidBtn').click(function(){
+    debugger
+    var validForm = true;
+    var form = this.closest('form')
+    for(var i = 0; i < form.elements.length; i++){
+      validForm = form.elements[i].checkValidity()
+      if(!validForm)
+        break;
+    }
+    if(validForm){
+      $('#LoadingImage').show();
+      setTimeout(function(){
+        $('#LoadingImage').hide();
+      },30000);
+    }
+  });
+
   $('.contest-start-draw').click(function(e){
   	var url = "/admin/contests/" + e.target.value + "/" + e.target.innerText.toLowerCase();
   	console.log(url);

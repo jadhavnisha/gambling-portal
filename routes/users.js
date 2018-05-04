@@ -37,7 +37,7 @@ router.post('/signup', function(req, res, next) {
       req.flash('info', 'Signed up successfuly..!!');
       setTimeout(function(){
         res.redirect('/signin');
-      },200);
+      },30000);
     })
     .catch(error => {
       req.flash('info', error.errors[0].message);
