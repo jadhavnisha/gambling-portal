@@ -2,7 +2,7 @@ const laxmiArtifacts = require('./build/contracts/Laxmi.json');
 var web3 = require('./server.js');
 const web3Obj = {}
 
-const LAXMI = new web3.eth.Contract(laxmiArtifacts.abi, '0x5d7be3a3f3441e50c82749354688ca78a564834c')
+const LAXMI = new web3.eth.Contract(laxmiArtifacts.abi, '0x6fbca9b487113c2a2e1727aa24d5b3fb9891b8d3')
 
 LAXMI.events.Transfer()
 .on('data', function(event){
