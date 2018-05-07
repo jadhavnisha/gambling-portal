@@ -28,7 +28,7 @@ block content
             each contest in createdContests
               tr
                 td.contest-thumbnail
-                  img.contest-thumbnail(src="/images/#{contest.name}.jpg")
+                  img.contest-thumbnail(src="/images/#{contest.name}.jpg" onerror="this.src='/images/2dice.jpg'")
                 | 
                 td
                   a(href="/contests/#{contest.id}") #{contest.name}
@@ -59,7 +59,7 @@ block content
           each contest in activeContests
             tr
               td.contest-thumbnail
-                img.contest-thumbnail(src="/images/#{contest.name}.jpg")
+                img.contest-thumbnail(src="/images/#{contest.name}.jpg" onerror="this.src='/images/2dice.jpg'")
               | 
               td
                 a(href="/contests/#{contest.id}") #{contest.name}
@@ -97,7 +97,7 @@ block content
           each contest in finishedContests
             tr
               td.contest-thumbnail
-                img.contest-thumbnail(src="/images/#{contest.name}.jpg")
+                img.contest-thumbnail(src="/images/#{contest.name}.jpg" onerror="this.src='/images/2dice.jpg'")
               | 
               td
                 a(href="/contests/#{contest.id}") #{contest.name}
