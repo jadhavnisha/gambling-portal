@@ -3,16 +3,37 @@ const router = express.Router();
 const models = require('../models/index');
 const contestService = require('../services/contest_service');
 
-/* list contests */
+/*
+Fetch all the contests,including its associated users and contestants
+*/
 router.get('/contests', function(req, res, next) {
-  var whereCondition = { status: req.query.filter || ['created', 'active', 'finished'] };
-  if(req.query.gameId)
-    whereCondition['gameId'] = parseInt(req.query.gameId);
   return models.contest.findAll({
-    where: whereCondition
+    include: [{
+      model: models.user,
+    }],
+    where: {gameId: 1},
   })
-  .then(contests => res.status(201).send(contests))
-  .catch(error => res.status(400));
+  .then(contests => {
+    res.render('contests/index', {contests: contests, user: req.user})
+  })
+  .catch(error => {console.log(error);return res.status(400).send(error)});
+});
+
+/* render contest creation form */
+router.get('/admin/contests/create', function(req, res, next) {
+  return res.render('admin/contests/create', {user: req.user});
+});
+
+router.get('/contests/:id', function(req, res, next) {
+  return models.contest.findOne({
+    include: [{
+      model: models.user,
+    }],
+    where: {id: parseInt(req.params.id)}
+  })
+  .then(contestWithContestants =>
+    res.render('contests/show', {user: req.user, contest: contestWithContestants}))
+  .catch(error => res.status(400).send(error));
 });
 
 /* Create contest or game instance*/
@@ -27,18 +48,18 @@ router.post('/admin/contests', function(req, res, next){
   }
   var contest = models.contest
     .create(contestData)
-    .then(contest => res.status(201).send(contest))
+    .then(contest => res.redirect('/contests'))
     .catch(error => res.status(400).send(error));
 });
 
 router.put('/admin/contests/:id/start', function(req, res, next) {
-  return contestService.start(req.params.id)
+  contestService.start(req.params.id)
   .then(contest => res.status(201).send(contest))
   .catch(err => next(err))
 });
 
 router.put('/admin/contests/:id/draw', function(req, res, next) {
-  return contestService.draw(req.params.id)
+  contestService.draw(req.params.id)
   .then(contest => {res.status(201).send(contest)})
   .catch(err => next(err))
 });

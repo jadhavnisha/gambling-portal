@@ -1,7 +1,84 @@
-doctype html
-html
-  head
-    title= title
+doctype html(lang='en')
+head
+    title Gambling Portal
+    | 
+    meta(charset='utf-8')
+    | 
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    | 
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
+    | 
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+    | 
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+    | 
     link(rel='stylesheet', href='/stylesheets/style.css')
+    | 
+    link(rel='stylesheet', href='/stylesheets/games.css')
+    | 
+    script(src='/javascripts/main.js')
+    | 
+    style.
+      /* Remove the navbar's default margin-bottom and rounded borders */
+      .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+      }
   body
-    block content
+    div#LoadingImage.disablingDiv
+      div
+        img(src="/images/please_wait.gif" width="300" height="200")
+    nav.navbar.navbar-inverse
+      .container-fluid
+        .navbar-header
+          button.navbar-toggle(type='button', data-toggle='collapse', data-target='#myNavbar')
+            span.icon-bar
+            |         
+            span.icon-bar
+            |         
+            span.icon-bar
+          |       
+          a.navbar-brand(href='#') Casino
+        |     
+        #myNavbar.collapse.navbar-collapse
+          ul.nav.navbar-nav
+            if user
+              li
+                a(href='/dashboard') Dashbaord
+              if user.isAdmin
+                li
+                  a(href='/admin/contests/create') Create Contest
+              li
+                a(href='') #{user.publicKey}
+          |       
+          ul.nav.navbar-nav.navbar-right
+            if user
+              li
+                a.white
+                  span.glyphicon.glyphicon-profile
+                  | Welcome, 
+                  strong #{user.firstName+' '+user.lastName}
+              li
+                a
+                  if user.isAdmin
+                    | [ admin ]  
+                  span.glyphicon.glyphicon-bitcoin
+                  | #{user.balance}                   
+              li
+                a(href='/signout')
+                  span.glyphicon.glyphicon-log-out
+                  |  Logout
+            else
+              li
+                a(href='/signin')
+                  span.glyphicon.glyphicon-log-in
+                  |  Login
+    .container
+      - if (messages.info)
+        .alert.alert-warning.fade.in
+          a.close(href="#", data-dismiss="alert") ×
+          | 
+          strong
+          |  #{messages.info[0]}
+
+      block content

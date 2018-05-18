@@ -1,5 +1,8 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  p.center-text.game-title Welcome to gambling portal
+  div.center-text
+    input.btn.btn-warning.contest-button.login-btn(type='button', onclick="location.href='/signup';", value='Sign Up')
+    | 
+    input.btn.btn-warning.contest-button.login-btn(type='button', onclick="location.href='/signin';", value='Login')

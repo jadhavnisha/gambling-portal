@@ -9,6 +9,7 @@ start = function(contest_id){
   return models.contest.setEncryptionKey(passphrase, contest_id)
   .then(contest => {  
     var result = Math.floor(Math.random()*(6*contest.config.number_of_dice));
+    console.log("resuuuuuuuult", result)
     var encrypted_result = cryptoObj.encrypt(result.toString(), passphrase);
     web3.setContestResult(contest.publicKey, encrypted_result);
     return contest;
@@ -23,6 +24,7 @@ draw = function(contest_id){
   
   return Promise.all([contestByID, gameInstance])
   .then(function([contest, encrypted_result]) {
+    console.log('encrypted_result', encrypted_result)
     var decrypted_result = cryptoObj.decrypt(encrypted_result.toString(), contest.config.encryption_key);
     var verifiedResult;
     if(decrypted_result < ((contest.config.number_of_dice*6)/2))
@@ -42,7 +44,7 @@ draw = function(contest_id){
   })
   .then(contest => sendReward(contest))
   .then(result => result)
-  .catch(error => error);
+  .catch(error => {console.log(error);return error});
 }
 
 sendReward = function(contest) {

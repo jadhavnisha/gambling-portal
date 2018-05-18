@@ -1,0 +1,105 @@
+extends ../layout
+
+block content
+  - var conetstant = {}
+  each u in contest.users
+    if u.id == user.id
+      - contestant = u.contestant
+  p.center-text.contest-title #{contest.status} Contest
+  .well.well-sm.first-heading.table-title
+    .row
+      .col-md-4
+        strong Name  : 
+        strong #{contest.name}
+        br
+        strong Result : 
+        strong #{contest.config.verified_result}
+      | 
+      .col-md-4
+        strong
+          | Started At : #{contest.status == 'created' ? 'Yet to Start' :  contest.startTime }
+          strong
+      | 
+      .col-md-4
+        strong
+          | Draw Time : #{contest.status == 'finished' ? contest.drawTime : 'Yet to Draw' }
+          strong
+  .anouncement  
+    if contestant
+      if contest.status == 'finished'
+        if contestant.prediction == contest.config.verified_result
+          p.center-text.game-title.bid-alert You WON 
+          img(src="/images/won.gif", style="width: 400px;height: 100px; ")
+        else 
+          p.center-text.game-title.bid-alert You LOST 
+          img(src="/images/lost.gif", style="width: 150px;height: 100px; ")
+      else
+        p.center-text.game-title.bid-alert You have placed bid for this contest
+  .row
+    if contest.users.length
+      div(class= contestant || user.isAdmin ? "col-md-12" : "col-md-8")
+        .table-responsive
+          table.table.table-bordered.table-fixed
+            thead
+              tr
+                th PlayerName
+                | 
+                th Prediction
+                | 
+                th Current Bet
+                if contest.status == 'finished'
+                  | 
+                  th Result
+            | 
+            tbody
+              each u in contest.users
+                tr(class= u.id == user.id ? "current-user-bid" : "")
+                  td #{u.firstName + ' ' + u.lastName}
+                  | 
+                  td #{u.contestant.prediction}
+                  | 
+                  td
+                    | #{u.contestant.bid}
+                    span.glyphicon.glyphicon-bitcoin
+                  if contest.status == 'finished'
+                    | 
+                    td
+                      if u.contestant.prediction == contest.config.verified_result
+                        | Won
+                      else
+                        | Lost
+    else
+      div(class= contestant || user.isAdmin ? "col-md-12" : "col-md-8")
+        p.center-text.game-title.bid-alert No bid has been placed
+          if !user.isAdmin
+            |, be the first one to bid this contest.
+    if !(contest.status == 'finished' || contestant || user.isAdmin)
+      .col-md-4
+        .panel.panel-default
+          .panel-heading
+            h3.panel-title(style="text-align: center;") place your BID here
+          | 
+          .panel-body
+            form(role='form', method='post', action='/contestant')
+              input(type="hidden", name="contestId", value="#{contest.id}")
+              fieldset
+                .form-group
+                  select#prediction.form-control.custom-select(name="prediction", required='required')
+                    option(value='') -- Predict --
+                    | 
+                    option High
+                    | 
+                    option Low
+                | 
+                .form-group
+                  input#bid.form-control(placeholder="Bid Amount", name="bid", type="number", min="10", max= user.balance > 10000 ? "10000" : "#{user.balance}" required="required", onkeydown="javascript: return event.keyCode == 69 ? false : true")
+                | 
+                p.bg-warning.text-muted.center-text Your Blockchain password is required to unloack the wallet and place the bid.
+                .row
+                  .col-md-11
+                    .form-group
+                      input#chain-password.col-md-10.form-control.input-sm(type='password', name='chainPassword', placeholder='Block-Chain Password*', required='required')
+                  | 
+                  img#eye(src="/images/eye-open.png", title="Show Password")
+                | 
+                button#placeBidBtn.btn.btn-primary(type='submit', style="margin-top: 10px") BID

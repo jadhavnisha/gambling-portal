@@ -1,0 +1,113 @@
+extends ../layout
+
+block content
+  - var createdContests = []
+  - var activeContests = []
+  - var finishedContests = []
+  each contest in contests
+    if contest.status == 'created'
+      - createdContests.push(contest)
+    else if contest.status == 'active'
+      - activeContests.push(contest)
+    else
+      - finishedContests.push(contest)
+  if user.isAdmin
+    .table-title Contest to Start
+    if createdContests.length
+      .table-responsive
+        table#active-contests-list.table.table-bordered
+          thead
+            tr
+              th(colspan="2") Name
+              | 
+              th Remarks / Information
+              | 
+              th Action
+          | 
+          tbody
+            each contest in createdContests
+              tr
+                td.contest-thumbnail
+                  img.contest-thumbnail(src="/images/#{contest.name}.jpg" onerror="this.src='/images/2dice.jpg'")
+                | 
+                td
+                  a(href="/contests/#{contest.id}") #{contest.name}
+                | 
+                td
+                | 
+                td
+                  button.contest-start-draw.btn.btn-warning(value="#{contest.id}") START
+    else
+      .no-records.center-text No records found
+  .table-title Active Contests
+  if activeContests.length
+    .table-responsive
+      table#active-contests-list.table.table-bordered
+        thead
+          tr
+            th(colspan="2") Name
+            | 
+            th Started At
+            | 
+            th Draw Time
+            | 
+            th # Players
+            | 
+            th Action
+        | 
+        tbody
+          each contest in activeContests
+            tr
+              td.contest-thumbnail
+                img.contest-thumbnail(src="/images/#{contest.name}.jpg" onerror="this.src='/images/2dice.jpg'")
+              | 
+              td
+                a(href="/contests/#{contest.id}") #{contest.name}
+              | 
+              td #{contest.startTime}
+              | 
+              td In next 2 hours
+              | 
+              td #{contest.users.length}
+              | 
+              td
+                if user.isAdmin
+                  button.contest-start-draw.btn.btn-warning(value="#{contest.id}") DRAW
+                else
+                  button.btn.btn-warning(value="#{contest.id}", onclick="window.open('/contests/#{contest.id}', '_self');") BID
+  else
+    .no-records.center-text No records found
+  .table-title Finished Contests
+  if finishedContests.length
+    .table-responsive
+      table#finished-contests-list.table.table-bordered
+        thead
+          tr
+            th(colspan="2") Name
+            | 
+            th Started At
+            | 
+            th Drawn At
+            | 
+            th Result
+            | 
+            th # Players
+        | 
+        tbody
+          each contest in finishedContests
+            tr
+              td.contest-thumbnail
+                img.contest-thumbnail(src="/images/#{contest.name}.jpg" onerror="this.src='/images/2dice.jpg'")
+              | 
+              td
+                a(href="/contests/#{contest.id}") #{contest.name}
+              | 
+              td #{contest.startTime}
+              | 
+              td #{contest.drawTime}
+              | 
+              td #{contest.config.verified_result}
+              | 
+              td #{contest.users.length}
+  else
+    .no-records.center-text No records found

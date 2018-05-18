@@ -1,0 +1,11 @@
+extends layout
+block content
+  p.center-text.game-title Select the game where you want to try your luck
+  .row.game-list
+    each game in games
+      .col-md-4
+        .thumbnail
+          a(href="/contests")
+            img.game-image(src="/images/#{game.name}.jpg", alt="#{game.name}")
+            | 
+            p.center-text.game-title #{game.name}

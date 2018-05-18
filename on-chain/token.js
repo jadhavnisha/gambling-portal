@@ -2,20 +2,17 @@ const laxmiArtifacts = require('./build/contracts/Laxmi.json');
 var web3 = require('./server.js');
 const web3Obj = {}
 
-const LAXMI = new web3.eth.Contract(laxmiArtifacts.abi, '0x646ca4f1c9339b7f91d1d9852f9a5205a2088b13')
+const LAXMI = new web3.eth.Contract(laxmiArtifacts.abi, '0x6fbca9b487113c2a2e1727aa24d5b3fb9891b8d3')
 
-// LAXMI.events.Transfer(function(error, event) {
-//   console.log(error);
-//   console.log(event);
-// });
-// .on('data', function(event){
-//   console.log('data',event); // same results as the optional callback above
-// })
-// .on('changed', function(event){
-//   // remove event from local database
-//   console.log('changed',event)
-// })
-// .on('error', console.error);
+LAXMI.events.Transfer()
+.on('data', function(event){
+  console.log('data',event); // same results as the optional callback above
+})
+.on('changed', function(event){
+  // remove event from local database
+  console.log('changed',event)
+})
+.on('error', console.error);
 
 createAccount = (passphrase=process.env.CONTEST_PASS) => {
   return web3.eth.personal.newAccount(passphrase).then(publickey => {
@@ -41,14 +38,25 @@ unlockAccount = (publickey, passphrase=process.env.CONTEST_PASS) => {
 transfer = (_to, _amount=200000, _from = web3.eth.defaultAccount) => {
   console.log('hereeeeeeeeeeeeeeeeee', _to,_from)
   LAXMI.methods.transfer(_to, _amount)
-  .send({from: _from},function(error, transactionHash){
-    if(error) {
-      console.log(error);
-      return error;
-    }
-    console.log(transactionHash);
-    return transactionHash
+  .send({from: _from})
+  .on('transactionHash', function(hash){
+    console.log('transactionHash',hash);
   })
+  .on('receipt', function(receipt){
+    console.log('receipt',receipt);
+  })
+  .on('confirmation', function(confirmationNumber, receipt){
+    console.log('confirmationNumber',confirmationNumber);  
+  })
+  .on('error', console.error);
+  // .then(transactionHash => {
+  //   // console.log(transactionHash);
+  //   return transactionHash
+  // })
+  // .catch(error => {
+  //   console.log(error);
+  //   throw error;
+  // });
 };
 
 clearAccount = (_from) => {

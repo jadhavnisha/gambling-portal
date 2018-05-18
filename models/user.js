@@ -121,24 +121,30 @@ module.exports = (sequelize, DataTypes) => {
     })
   }
 
+  function getById(user_id){
+    return user.findOne({
+      where: {
+        id: user_id
+      }
+    })
+    .then(user => {
+      if (user == null) {
+        var err = new Error("User not found");
+        err.status = 401;
+        throw err;
+      }else{
+        return getBalance(user);
+      }
+    })
+    .catch(error => console.log);
+  }
+
   function getBalance(user) {
     return web3.getBalance(user.publicKey)
     .then(balance => {
       user.balance = balance;
       return user
     });
-  }
-
-  function getById(user_id){
-    return user.findById(user_id)
-    .then(user => {
-      if(user == null) {
-        var err = new Error("User not found");
-        err.status = 401;
-        throw err;
-      }
-      return user
-    })
   }
 
   user.authenticate = authenticate;

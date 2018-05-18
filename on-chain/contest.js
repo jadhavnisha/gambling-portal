@@ -2,7 +2,7 @@ const contestArtifacts = require('./build/contracts/ContestResult.json');
 var web3 = require('./server.js');
 const web3Obj = {}
 
-const CONTESTS = new web3.eth.Contract(contestArtifacts.abi, '0xd50648b9e572c639bb3f4394e166888819accb89')
+const CONTESTS = new web3.eth.Contract(contestArtifacts.abi, '0x8d61f3c2ebd4071dae70a39af3c70e89e2a616cd')
 
 setContestResult = (_contestAddress, encrypted_result) => {
   CONTESTS.methods.setContestResult(_contestAddress, encrypted_result)
