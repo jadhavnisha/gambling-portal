@@ -47,7 +47,7 @@ db.Sequelize = Sequelize;
 db.user = require('./user')(sequelize, Sequelize);
 db.game = require('./game')(sequelize, Sequelize);
 db.contest = require('./contest')(sequelize, Sequelize);
-db.contestant = require('./contestant')(sequelize, Sequelize);
+// db.contestant = require('./contestant')(sequelize, Sequelize);
 
 //relation/associations
 db.user.belongsToMany(db.contest, { through: db.contestant })

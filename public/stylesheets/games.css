@@ -1,0 +1,85 @@
+.game-list{
+	padding-top: 10;
+}
+
+.game-image{
+	width: 100% !important;
+	height: 50% !important;
+}
+
+.game-title{
+	font-weight: bolder;
+	font-size: 30;
+	
+	color: #000;
+}
+
+.thumbnail{
+	background-color: #22ADB1;
+}
+
+.table-title{
+  background-color: #035;
+  font-size: 20px;
+  margin-top: 10;
+  color: white;
+  padding: 10 0 10 10;
+}
+
+table, th, td {
+	border: 1px solid black !important;
+	border-collapse: collapse;
+}
+
+th{
+	text-align: center;
+}
+
+table>thead{
+	background-color: aliceblue;
+}
+
+.contest-thumbnail{
+	width: 35px;
+}
+
+.contest-button{
+	width: 100%;
+}
+
+.contest-start-draw{
+	width: 50%;
+}
+
+.login-btn{
+	width: 10%;
+	font-weight: bolder;
+}
+
+.table-responsive {
+    max-height:300px;
+}
+
+.bid-alert{
+  background-color: #EE9;
+}
+
+.current-user-bid{
+  background-color: moccasin;
+  font-weight: bolder;
+}
+
+#eye{
+  width: 25px;
+}
+
+.contest-title{
+  font-weight: bolder;
+  font-size: 30;
+  background-color: #F08;
+  color: #000;
+}
+
+.anouncement{
+  text-align: center;
+}
